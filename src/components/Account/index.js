@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-//import {
-//  AuthUserContext,
-//  withAuthorization,
-//  withEmailVerification,
-//} from '../Session';
 import {
   AuthUserContext,
   withAuthorization,
+  withEmailVerification,
 } from '../Session';
 import { withFirebase } from '../Firebase';
 import { PasswordForgetForm } from '../PasswordForget';
@@ -25,6 +21,7 @@ const AccountPage = () => (
   <AuthUserContext.Consumer>
     {authUser => (
       <div>
+        <h1>Hello {authUser.firstName}!</h1>
         <h1>Account: {authUser.email}</h1>
         <PasswordForgetForm />
         <PasswordChangeForm />
@@ -158,5 +155,6 @@ const LoginManagement = withFirebase(LoginManagementBase);
 const condition = authUser => !!authUser;
 
 export default compose(
+  withEmailVerification,
   withAuthorization(condition),
 )(AccountPage);

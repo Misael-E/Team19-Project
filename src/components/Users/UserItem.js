@@ -55,7 +55,13 @@ class UserItem extends Component {
               <strong>E-Mail:</strong> {user.email}
             </span>
             <span>
-              <strong>Username:</strong> {user.username}
+              <strong>First Name:</strong> {user.firstName}
+            </span>
+            <span>
+              <strong>Last Name:</strong> {user.lastName}
+            </span>
+            <span>
+              <strong>Role:</strong> {user.roles}
             </span>
             <span>
               <button

@@ -53,7 +53,10 @@ class UserList extends Component {
                 <strong>E-Mail:</strong> {user.email}
               </span>
               <span>
-                <strong>Username:</strong> {user.username}
+                <strong>First Name:</strong> {user.firstName}
+              </span>
+              <span>
+                <strong>Last Name:</strong> {user.lastName}
               </span>
               <span>
                 <Link
