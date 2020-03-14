@@ -8,7 +8,7 @@ import * as ROLES from '../../constants/roles';
 
 const SignUpPage = () => (
   <div>
-    <h1>Create an Account!</h1>
+    <h1>Create an Account</h1>
     <p> Join to get started on publishing, reviewing or editing journals now! </p>
     <SignUpForm />
   </div>

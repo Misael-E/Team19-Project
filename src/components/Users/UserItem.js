@@ -61,9 +61,6 @@ class UserItem extends Component {
               <strong>Last Name:</strong> {user.lastName}
             </span>
             <span>
-              <strong>Role:</strong> {user.roles}
-            </span>
-            <span>
               <button
                 type="button"
                 onClick={this.onSendPasswordResetEmail}
