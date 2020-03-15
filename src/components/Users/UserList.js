@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 class UserList extends Component {
   constructor(props) {
@@ -53,7 +54,17 @@ class UserList extends Component {
                 <strong>E-Mail:</strong> {user.email}
               </span>
               <span>
-                <strong>Username:</strong> {user.username}
+                <strong>First Name:</strong> {user.firstName}
+              </span>
+              <span>
+                <strong>Last Name:</strong> {user.lastName}
+              </span>
+              <span>
+                <strong>Role:</strong>
+                {user.roles[ROLES.ADMIN]}
+                {user.roles[ROLES.EDITOR]}
+                {user.roles[ROLES.RESEARCHER]}
+                {user.roles[ROLES.REVIEWER]}
               </span>
               <span>
                 <Link

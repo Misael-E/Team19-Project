@@ -21,7 +21,7 @@ const Navigation = () => (
 const NavigationAuth = ({ authUser }) => (
   <ul>
     <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
+      <Link to={ROUTES.LANDING}>uScholar</Link>
     </li>
     <li>
       <Link to={ROUTES.HOME}>Home</Link>
@@ -34,6 +34,21 @@ const NavigationAuth = ({ authUser }) => (
         <Link to={ROUTES.ADMIN}>Admin</Link>
       </li>
     )}
+    {!!authUser.roles[ROLES.RESEARCHER] && (
+      <li>
+        <Link to={ROUTES.RESEARCHER}>Start Submitting</Link>
+      </li>
+    )}
+    {!!authUser.roles[ROLES.REVIEWER] && (
+      <li>
+        <Link to={ROUTES.REVIEWER}>Reviewer</Link>
+      </li>
+    )}
+    {!!authUser.roles[ROLES.EDITOR] && (
+      <li>
+        <Link to={ROUTES.EDITOR}>Editor</Link>
+      </li>
+    )}
     <li>
       <SignOutButton />
     </li>
@@ -43,7 +58,7 @@ const NavigationAuth = ({ authUser }) => (
 const NavigationNonAuth = () => (
   <ul>
     <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
+      <Link to={ROUTES.LANDING}>uScholar</Link>
     </li>
     <li>
       <Link to={ROUTES.SIGN_IN}>Sign In</Link>

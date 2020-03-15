@@ -1,11 +1,11 @@
 import React from 'react';
 import { compose } from 'recompose';
 
-import { withAuthorization, withEmailVerification } from '../Session';
+import { withAuthorization, withEmailVerification } from '../../Session';
 
-const HomePage = () => (
+const ReviewerPage = () => (
   <div>
-    <h1>Home</h1>
+    <h1> Reviewer </h1>
   </div>
 );
 
@@ -14,4 +14,4 @@ const condition = authUser => !!authUser;
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
-)(HomePage);
+)(ReviewerPage);

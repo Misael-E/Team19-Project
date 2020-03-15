@@ -41,7 +41,7 @@ class Firebase {
 
   doSendEmailVerification = () =>
     this.auth.currentUser.sendEmailVerification({
-      url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
+      url: 'http://localhost:3000',
     });
 
   doPasswordUpdate = password =>
@@ -84,11 +84,6 @@ class Firebase {
 
   users = () => this.db.ref('users');
 
-  // *** Message API ***
-
-  message = uid => this.db.ref(`messages/${uid}`);
-
-  messages = () => this.db.ref('messages');
 }
 
 export default Firebase;

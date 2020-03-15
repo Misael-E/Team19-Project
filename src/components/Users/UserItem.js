@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 class UserItem extends Component {
   constructor(props) {
@@ -55,7 +58,17 @@ class UserItem extends Component {
               <strong>E-Mail:</strong> {user.email}
             </span>
             <span>
-              <strong>Username:</strong> {user.username}
+              <strong>First Name:</strong> {user.firstName}
+            </span>
+            <span>
+              <strong>Last Name:</strong> {user.lastName}
+            </span>
+            <span>
+              <strong>Role:</strong>
+              {user.roles[ROLES.ADMIN]}
+              {user.roles[ROLES.EDITOR]}
+              {user.roles[ROLES.RESEARCHER]}
+              {user.roles[ROLES.REVIEWER]}
             </span>
             <span>
               <button
@@ -64,6 +77,16 @@ class UserItem extends Component {
               >
                 Send Password Reset
               </button>
+            </span>
+            <span>
+              <Link
+                to={{
+                  pathname: `${ROUTES.ADMIN}/${user.uid}/changerole`,
+                  state: { user },
+                }}
+              >
+                Change Role
+              </Link>
             </span>
           </div>
         )}

@@ -8,17 +8,22 @@ import * as ROLES from '../../constants/roles';
 
 const SignUpPage = () => (
   <div>
-    <h1>SignUp</h1>
+    <h1>Create an Account</h1>
+    <p> Join to get started on publishing, reviewing or editing journals now! </p>
     <SignUpForm />
   </div>
 );
 
 const INITIAL_STATE = {
-  username: '',
+  firstName: '',
+  lastName: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
   isAdmin: false,
+  isResearcher: false,
+  isEditor: false,
+  isReviewer: false,
   error: null,
 };
 
@@ -40,19 +45,17 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne, isAdmin } = this.state;
+    const { firstName, lastName, email, passwordOne, passwordTwo, isAdmin, isEditor, isReviewer, isResearcher } = this.state;
     const roles = {};
 
-    if (isAdmin) {
-      roles[ROLES.ADMIN] = ROLES.ADMIN;
-    }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // Create a user in your Firebase realtime database
         return this.props.firebase.user(authUser.user.uid).set({
-          username,
+          firstName,
+          lastName,
           email,
           roles,
         });
@@ -85,11 +88,11 @@ class SignUpFormBase extends Component {
 
   render() {
     const {
-      username,
+      firstName,
+      lastName,
       email,
       passwordOne,
       passwordTwo,
-      isAdmin,
       error,
     } = this.state;
 
@@ -97,16 +100,24 @@ class SignUpFormBase extends Component {
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      username === '';
+      firstName === '' ||
+      lastName === '' ;
 
     return (
       <form onSubmit={this.onSubmit}>
         <input
-          name="username"
-          value={username}
+          name="firstName"
+          value={firstName}
           onChange={this.onChange}
           type="text"
-          placeholder="Full Name"
+          placeholder="First Name"
+        />
+        <input
+          name="lastName"
+          value={lastName}
+          onChange={this.onChange}
+          type="text"
+          placeholder="Last Name"
         />
         <input
           name="email"
@@ -129,15 +140,6 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
-        <label>
-          Admin:
-          <input
-            name="isAdmin"
-            type="checkbox"
-            checked={isAdmin}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>
