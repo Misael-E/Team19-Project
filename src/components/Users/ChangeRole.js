@@ -8,7 +8,6 @@ import * as ROLES from '../../constants/roles';
 const INITIAL_STATE = {
   loading: false,
   user: null,
-  isAdmin: false,
   isResearcher: false,
   isEditor: false,
   isReviewer: false,
@@ -24,12 +23,10 @@ class ChangeRole extends Component {
     };
   }
   onSubmit = event => {
-    const { isAdmin, isEditor, isReviewer, isResearcher } = this.state;
+    const { isEditor, isReviewer, isResearcher } = this.state;
     const roles = {};
 
-    if (isAdmin) {
-      roles[ROLES.ADMIN] = ROLES.ADMIN;
-    }
+
     if (isEditor) {
       roles[ROLES.EDITOR] = ROLES.EDITOR;
     }
@@ -81,7 +78,6 @@ class ChangeRole extends Component {
       user,
       loading,
       error,
-      isAdmin,
       isEditor,
       isReviewer,
       isResearcher } = this.state;
@@ -104,15 +100,6 @@ class ChangeRole extends Component {
         )}
         <h2> Assign Role: </h2>
         <form onSubmit={this.onSubmit}>
-        <label>
-          Admin:
-          <input
-            name="isAdmin"
-            type="checkbox"
-            checked={isAdmin}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
         <label>
           Editor:
           <input
