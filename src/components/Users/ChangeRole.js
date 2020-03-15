@@ -27,14 +27,27 @@ class ChangeRole extends Component {
     const { isAdmin, isEditor, isReviewer, isResearcher } = this.state;
     const roles = {};
 
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    }
+    if (isEditor) {
+      roles[ROLES.EDITOR] = ROLES.EDITOR;
+    }
+    if (isReviewer) {
+      roles[ROLES.REVIEWER] = ROLES.REVIEWER;
+    }
     if (isResearcher) {
       roles[ROLES.RESEARCHER] = ROLES.RESEARCHER;
     }
 
-    this.props.firebase.user(this.props.firebase.user.uid).update({
-          roles,
-        });
-  }
+    this.props.firebase.user(this.props.match.params.id).update({'roles': roles,})
+    .then(() => {
+      this.setState({ ...INITIAL_STATE });
+      this.props.history.push(ROUTES.ADMIN_ROLE_CHANGE);
+    });
+
+
+  };
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -64,7 +77,14 @@ class ChangeRole extends Component {
   }
 
   render() {
-    const { user, loading, error, isResearcher, } = this.state;
+    const {
+      user,
+      loading,
+      error,
+      isAdmin,
+      isEditor,
+      isReviewer,
+      isResearcher } = this.state;
 
     return (
       <div>
@@ -84,6 +104,33 @@ class ChangeRole extends Component {
         )}
         <h2> Assign Role: </h2>
         <form onSubmit={this.onSubmit}>
+        <label>
+          Admin:
+          <input
+            name="isAdmin"
+            type="checkbox"
+            checked={isAdmin}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
+        <label>
+          Editor:
+          <input
+            name="isEditor"
+            type="checkbox"
+            checked={isEditor}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
+        <label>
+          Reviewer:
+          <input
+            name="isReviewer"
+            type="checkbox"
+            checked={isReviewer}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
         <label>
           Researcher:
           <input

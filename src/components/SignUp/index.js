@@ -20,6 +20,10 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  isAdmin: false,
+  isResearcher: false,
+  isEditor: false,
+  isReviewer: false,
   error: null,
 };
 
@@ -41,7 +45,7 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { firstName, lastName, email, passwordOne, passwordTwo} = this.state;
+    const { firstName, lastName, email, passwordOne, passwordTwo, isAdmin, isEditor, isReviewer, isResearcher } = this.state;
     const roles = {};
 
 
