@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { withFirebase } from '../Firebase';
+import Firebase, { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
 const INITIAL_STATE = {
+  loading: false,
+  user: null,
   isAdmin: false,
   isResearcher: false,
   isEditor: false,
@@ -18,19 +20,28 @@ class ChangeRole extends Component {
     super(props);
 
     this.state = {
-      loading: false,
-      user: null,
-      ...props.location.state,
+      ...props.location.state,INITIAL_STATE,
     };
   }
   onSubmit = event => {
-    const { isResearcher } = this.state;
+    const { isAdmin, isEditor, isReviewer, isResearcher } = this.state;
     const roles = {};
 
     if (isResearcher) {
       roles[ROLES.RESEARCHER] = ROLES.RESEARCHER;
     }
+
+    this.props.firebase.user(this.props.firebase.user.uid).update({
+          roles,
+        });
   }
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+  onChangeCheckbox = event => {
+    this.setState({ [event.target.name]: event.target.checked });
+  };
+
   componentDidMount() {
     if (this.state.user) {
       return;
@@ -52,16 +63,12 @@ class ChangeRole extends Component {
     this.props.firebase.user(this.props.match.params.id).off();
   }
 
-  onSendPasswordResetEmail = () => {
-    this.props.firebase.doPasswordReset(this.state.user.email);
-  };
-
   render() {
     const { user, loading, error, isResearcher, } = this.state;
 
     return (
       <div>
-        <h2>User ({this.props.match.params.id})</h2>
+        <h2>User ({this.props.match.params.id}) </h2>
         {loading && <div>Loading ...</div>}
 
         {user && (
@@ -87,7 +94,7 @@ class ChangeRole extends Component {
           />
         </label>
           <button type="submit">
-            Change
+            Update
           </button>
 
           {error && <p>{error.message}</p>}
