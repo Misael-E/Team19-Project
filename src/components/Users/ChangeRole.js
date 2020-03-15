@@ -5,7 +5,15 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
-class UserItem extends Component {
+const INITIAL_STATE = {
+  isAdmin: false,
+  isResearcher: false,
+  isEditor: false,
+  isReviewer: false,
+  error: null,
+};
+
+class ChangeRole extends Component {
   constructor(props) {
     super(props);
 
@@ -15,7 +23,14 @@ class UserItem extends Component {
       ...props.location.state,
     };
   }
+  onSubmit = event => {
+    const { isResearcher } = this.state;
+    const roles = {};
 
+    if (isResearcher) {
+      roles[ROLES.RESEARCHER] = ROLES.RESEARCHER;
+    }
+  }
   componentDidMount() {
     if (this.state.user) {
       return;
@@ -42,7 +57,7 @@ class UserItem extends Component {
   };
 
   render() {
-    const { user, loading } = this.state;
+    const { user, loading, error, isResearcher, } = this.state;
 
     return (
       <div>
@@ -52,47 +67,34 @@ class UserItem extends Component {
         {user && (
           <div>
             <span>
-              <strong>ID:</strong> {user.uid}
-            </span>
-            <span>
-              <strong>E-Mail:</strong> {user.email}
-            </span>
-            <span>
-              <strong>First Name:</strong> {user.firstName}
-            </span>
-            <span>
-              <strong>Last Name:</strong> {user.lastName}
-            </span>
-            <span>
               <strong>Role:</strong>
               {user.roles[ROLES.ADMIN]}
               {user.roles[ROLES.EDITOR]}
               {user.roles[ROLES.RESEARCHER]}
               {user.roles[ROLES.REVIEWER]}
             </span>
-            <span>
-              <button
-                type="button"
-                onClick={this.onSendPasswordResetEmail}
-              >
-                Send Password Reset
-              </button>
-            </span>
-            <span>
-              <Link
-                to={{
-                  pathname: `${ROUTES.ADMIN}/${user.uid}/changerole`,
-                  state: { user },
-                }}
-              >
-                Change Role
-              </Link>
-            </span>
           </div>
         )}
+        <h2> Assign Role: </h2>
+        <form onSubmit={this.onSubmit}>
+        <label>
+          Researcher:
+          <input
+            name="isResearcher"
+            type="checkbox"
+            checked={isResearcher}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
+          <button type="submit">
+            Change
+          </button>
+
+          {error && <p>{error.message}</p>}
+        </form>
       </div>
+
     );
   }
 }
-
-export default withFirebase(UserItem);
+export default withFirebase(ChangeRole);

@@ -6,8 +6,6 @@ import { withAuthorization, withEmailVerification } from '../Session';
 const HomePage = () => (
   <div>
     <h1>Home</h1>
-    <p>Start your publication process</p>
-
   </div>
 );
 

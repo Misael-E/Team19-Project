@@ -6,6 +6,7 @@ export const ACCOUNT = '/account';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ADMIN = '/admin';
 export const ADMIN_DETAILS = '/admin/:id';
+export const ADMIN_ROLE_CHANGE = '/admin/:id/changerole';
 export const RESEARCHER = '/researcher';
 export const REVIEWER = '/reviewer';
 export const EDITOR = '/editor';

@@ -36,7 +36,7 @@ const NavigationAuth = ({ authUser }) => (
     )}
     {!!authUser.roles[ROLES.RESEARCHER] && (
       <li>
-        <Link to={ROUTES.RESEARCHER}>Researcher</Link>
+        <Link to={ROUTES.RESEARCHER}>Start Submitting</Link>
       </li>
     )}
     {!!authUser.roles[ROLES.REVIEWER] && (
