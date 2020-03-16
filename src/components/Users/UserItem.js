@@ -69,6 +69,7 @@ class UserItem extends Component {
               {user.roles[ROLES.EDITOR]}
               {user.roles[ROLES.RESEARCHER]}
               {user.roles[ROLES.REVIEWER]}
+              {user.roles[ROLES.NONE]}
             </span>
             <span>
               <button

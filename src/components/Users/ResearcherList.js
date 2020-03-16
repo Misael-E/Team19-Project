@@ -64,14 +64,16 @@ class ResearcherList extends Component {
               <span>
                 <strong>Role:</strong> {user.roles[ROLES.RESEARCHER]}
               </span>
-              <Link
-                to={{
-                  pathname: `${ROUTES.EDITOR}/${user.uid}`,
-                  state: { user },
-                }}
-              >
-                View History
-              </Link>
+              <span>
+                <Link
+                  to={{
+                    pathname: `${ROUTES.EDITOR}/${user.uid}`,
+                    state: { user },
+                  }}
+                >
+                  View History
+                </Link>
+              </span>
             </li>
           ))}
         </ul>

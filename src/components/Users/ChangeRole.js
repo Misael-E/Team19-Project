@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   isResearcher: false,
   isEditor: false,
   isReviewer: false,
+  isNone: false,
   error: null,
 };
 
@@ -23,7 +24,7 @@ class ChangeRole extends Component {
     };
   }
   onSubmit = event => {
-    const { isEditor, isReviewer, isResearcher } = this.state;
+    const { isEditor, isReviewer, isResearcher, isNone } = this.state;
     const roles = {};
 
 
@@ -35,6 +36,9 @@ class ChangeRole extends Component {
     }
     if (isResearcher) {
       roles[ROLES.RESEARCHER] = ROLES.RESEARCHER;
+    }
+    if (isNone) {
+      roles[ROLES.NONE] = ROLES.NONE;
     }
 
     this.props.firebase.user(this.props.match.params.id).update({'roles': roles,})
@@ -80,7 +84,8 @@ class ChangeRole extends Component {
       error,
       isEditor,
       isReviewer,
-      isResearcher } = this.state;
+      isResearcher,
+      isNone} = this.state;
 
     return (
       <div>
@@ -95,6 +100,7 @@ class ChangeRole extends Component {
               {user.roles[ROLES.EDITOR]}
               {user.roles[ROLES.RESEARCHER]}
               {user.roles[ROLES.REVIEWER]}
+              {user.roles[ROLES.NONE]}
             </span>
           </div>
         )}
@@ -124,6 +130,15 @@ class ChangeRole extends Component {
             name="isResearcher"
             type="checkbox"
             checked={isResearcher}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
+        <label>
+          None:
+          <input
+            name="isNone"
+            type="checkbox"
+            checked={isNone}
             onChange={this.onChangeCheckbox}
           />
         </label>

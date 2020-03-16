@@ -65,8 +65,9 @@ class UserList extends Component {
                 <strong>Role:</strong>
                 {user.roles[ROLES.ADMIN]}
                 {user.roles[ROLES.EDITOR]}
-                {user.roles[ROLES.RESEARCHER]}
                 {user.roles[ROLES.REVIEWER]}
+                {user.roles[ROLES.RESEARCHER]}
+                {user.roles[ROLES.NONE]}
               </span>
               <span>
                 <Link

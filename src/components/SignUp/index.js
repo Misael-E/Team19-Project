@@ -20,10 +20,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
-  isAdmin: false,
-  isResearcher: false,
-  isEditor: false,
-  isReviewer: false,
+  noRole: true,
   error: null,
 };
 
@@ -45,9 +42,9 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { firstName, lastName, email, passwordOne, passwordTwo, isAdmin, isEditor, isReviewer, isResearcher } = this.state;
+    const { firstName, lastName, email, passwordOne, passwordTwo, isNone } = this.state;
     const roles = {};
-
+    roles[ROLES.NONE] = ROLES.NONE;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -80,10 +77,6 @@ class SignUpFormBase extends Component {
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  };
-
-  onChangeCheckbox = event => {
-    this.setState({ [event.target.name]: event.target.checked });
   };
 
   render() {
