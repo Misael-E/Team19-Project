@@ -5,7 +5,7 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
-class UserList extends Component {
+class ResearcherList extends Component {
   constructor(props) {
     super(props);
 
@@ -18,7 +18,7 @@ class UserList extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.props.firebase.users().on('value', snapshot => {
+    this.props.firebase.users().orderByChild('roles/RESEARCHER').equalTo('RESEARCHER').on('value', snapshot => {
       if (snapshot.exists()) {
         const usersObject = snapshot.val();
 
@@ -44,7 +44,7 @@ class UserList extends Component {
 
     return (
       <div>
-        <h2>Users</h2>
+        <h2>Researchers</h2>
         {loading && <div>Loading ...</div>}
         <ul>
           {users.map(user => (
@@ -62,21 +62,16 @@ class UserList extends Component {
                 <strong>Last Name:</strong> {user.lastName}
               </span>
               <span>
-                <strong>Role:</strong>
-                {user.roles[ROLES.ADMIN]}
-                {user.roles[ROLES.EDITOR]}
-                {user.roles[ROLES.REVIEWER]}
-                {user.roles[ROLES.RESEARCHER]}
-                {user.roles[ROLES.NONE]}
+                <strong>Role:</strong> {user.roles[ROLES.RESEARCHER]}
               </span>
               <span>
                 <Link
                   to={{
-                    pathname: `${ROUTES.ADMIN}/${user.uid}`,
+                    pathname: `${ROUTES.EDITOR}/${user.uid}`,
                     state: { user },
                   }}
                 >
-                  Details
+                  View History
                 </Link>
               </span>
             </li>
@@ -87,4 +82,4 @@ class UserList extends Component {
   }
 }
 
-export default withFirebase(UserList);
+export default withFirebase(ResearcherList);

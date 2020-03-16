@@ -5,7 +5,7 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
-class UserItem extends Component {
+class ResearcherItem extends Component {
   constructor(props) {
     super(props);
 
@@ -37,10 +37,6 @@ class UserItem extends Component {
     this.props.firebase.user(this.props.match.params.id).off();
   }
 
-  onSendPasswordResetEmail = () => {
-    this.props.firebase.doPasswordReset(this.state.user.email);
-  };
-
   render() {
     const { user, loading } = this.state;
 
@@ -65,29 +61,7 @@ class UserItem extends Component {
             </span>
             <span>
               <strong>Role:</strong>
-              {user.roles[ROLES.ADMIN]}
-              {user.roles[ROLES.EDITOR]}
               {user.roles[ROLES.RESEARCHER]}
-              {user.roles[ROLES.REVIEWER]}
-              {user.roles[ROLES.NONE]}
-            </span>
-            <span>
-              <button
-                type="button"
-                onClick={this.onSendPasswordResetEmail}
-              >
-                Send Password Reset
-              </button>
-            </span>
-            <span>
-              <Link
-                to={{
-                  pathname: `${ROUTES.ADMIN}/${user.uid}/changerole`,
-                  state: { user },
-                }}
-              >
-                Change Role
-              </Link>
             </span>
           </div>
         )}
@@ -96,4 +70,4 @@ class UserItem extends Component {
   }
 }
 
-export default withFirebase(UserItem);
+export default withFirebase(ResearcherItem);
