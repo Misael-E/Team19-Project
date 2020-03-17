@@ -9,6 +9,8 @@ Install these packages by typing these commands in console.<br/>
 npm install --save firebase <br/>
 npm install react-router-dom <br/>
 npm install recompose <br/>
+npm i --save @fortawesome/fontawesome-svg-core  @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome <br/>
+
 
 Update this if you install any packages. 
 
