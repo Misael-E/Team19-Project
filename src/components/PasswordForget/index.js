@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
+import './forget.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+
 const PasswordForgetPage = () => (
-  <div>
-    <h1>Forgot Your Password?</h1>
-    <p> Enter your email and we'll send an email (Check your spam) to reset your password </p>
-    <PasswordForgetForm />
+  <div className="login-box">
+      Enter your email and we'll send an email (Check your spam) to reset your password
+      <PasswordForgetForm />
   </div>
 );
 
@@ -49,20 +52,31 @@ class PasswordForgetFormBase extends Component {
     const isInvalid = email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={this.state.email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
+      <body>
+        <div className="login-box">
+          <h2>Forgot Password?</h2>
+          <form onSubmit={this.onSubmit}>
+            <div className="textbox">
+            <i>
+              <FontAwesomeIcon icon={faUser} />
+            </i>
+            <input
+              name="email"
+              value={this.state.email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email Address"
+            />
+            </div>
+            {error && <p>{error.message}</p>}
+          </form>
+          <form onSubmit={this.onSubmit}>
+            <button className="btn" disabled={isInvalid} type="submit">
+              Reset My Password
+            </button>
+            </form>
+        </div>
+      </body>
     );
   }
 }

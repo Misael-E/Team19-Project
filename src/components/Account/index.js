@@ -9,6 +9,8 @@ import {
 import { withFirebase } from '../Firebase';
 import PasswordChangeForm from '../PasswordChange';
 
+import './account.css';
+
 const SIGN_IN_METHODS = [
   {
     id: 'password',
@@ -20,10 +22,12 @@ const AccountPage = () => (
   <AuthUserContext.Consumer>
     {authUser => (
       <div>
-        <h1>Hello {authUser.firstName}!</h1>
-        <h1>Account Details: {authUser.email}</h1>
-        <PasswordChangeForm />
-        <LoginManagement authUser={authUser} />
+        <span className="user"><h2 className="boxed">Account: {authUser.email}</h2></span>
+        <div className="login-box">
+          <h2>Hello {authUser.firstName}!</h2>
+          <PasswordChangeForm />
+          <LoginManagement authUser={authUser} />
+        </div>
       </div>
     )}
   </AuthUserContext.Consumer>
