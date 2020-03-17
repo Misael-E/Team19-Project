@@ -5,6 +5,8 @@ import Firebase, { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
+import './changeRole.css';
+
 const INITIAL_STATE = {
   loading: false,
   user: null,
@@ -89,12 +91,12 @@ class ChangeRole extends Component {
 
     return (
       <div>
-        <h2>User ({this.props.match.params.id}) </h2>
-        {loading && <div>Loading ...</div>}
+        <h2 className="user">User: ({this.props.match.params.id}) </h2>
+        {loading && <div className="loading">Loading ...</div>}
 
         {user && (
           <div>
-            <span>
+            <span className="role">
               <strong>Role:</strong>
               {user.roles[ROLES.ADMIN]}
               {user.roles[ROLES.EDITOR]}
@@ -104,8 +106,9 @@ class ChangeRole extends Component {
             </span>
           </div>
         )}
-        <h2> Assign Role: </h2>
+        <h2 className="assign"> Assign Role: </h2>
         <form onSubmit={this.onSubmit}>
+          <div className="center">
         <label>
           Editor:
           <input
@@ -142,11 +145,12 @@ class ChangeRole extends Component {
             onChange={this.onChangeCheckbox}
           />
         </label>
-          <button type="submit">
+          <button className="updatebtn" type="submit">
             Update
           </button>
 
           {error && <p>{error.message}</p>}
+          </div>
         </form>
       </div>
 

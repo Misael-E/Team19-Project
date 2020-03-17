@@ -5,6 +5,8 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
+import './useritem.css';
+
 class UserItem extends Component {
   constructor(props) {
     super(props);
@@ -46,11 +48,11 @@ class UserItem extends Component {
 
     return (
       <div>
-        <h2>User ({this.props.match.params.id})</h2>
-        {loading && <div>Loading ...</div>}
+        <h2 className="user">User: ({this.props.match.params.id})</h2>
+        {loading && <div className="loading">Loading ...</div>}
 
         {user && (
-          <div>
+          <div className="list">
             <span>
               <strong>ID:</strong> {user.uid}
             </span>
@@ -73,6 +75,7 @@ class UserItem extends Component {
             </span>
             <span>
               <button
+                className="reset"
                 type="button"
                 onClick={this.onSendPasswordResetEmail}
               >

@@ -7,10 +7,12 @@ import { UserList, UserItem, ChangeRole } from '../../Users';
 import * as ROLES from '../../../constants/roles';
 import * as ROUTES from '../../../constants/routes';
 
+import './admin.css';
+
 const AdminPage = () => (
   <div>
-    <h1>Admin</h1>
-    <p>The Admin Page is accessible by every signed in admin user.</p>
+    <h1 className="admin">Admin</h1>
+    <p className="subhead">The Admin Page is accessible by every signed in admin user.</p>
 
     <Switch>
       <Route exact path={ROUTES.ADMIN_ROLE_CHANGE} component={ChangeRole} />

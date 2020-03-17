@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
 
+import './change.css';
+
 const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
@@ -40,30 +42,39 @@ class PasswordChangeForm extends Component {
     const isInvalid =
       passwordOne !== passwordTwo || passwordOne === '';
 
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
-    );
+      return (
+        <body>
+          <div className="login-box">
+            <form onSubmit={this.onSubmit}>
+              <div className="textbox">
+              <input
+                name="passwordOne"
+                value={passwordOne}
+                onChange={this.onChange}
+                type="password"
+                placeholder="New Password"
+              />
+              </div>
+              <div className="textbox">
+              <input
+                name="passwordTwo"
+                value={passwordTwo}
+                onChange={this.onChange}
+                type="password"
+                placeholder="Confirm New Password"
+              />
+              </div>
+              {error && <p>{error.message}</p>}
+            </form>
+            <form onSubmit={this.onSubmit}>
+              <button className="btn" disabled={isInvalid} type="submit">
+                Change Password
+              </button>
+              </form>
+          </div>
+        </body>
+      );
+    }
   }
-}
 
 export default withFirebase(PasswordChangeForm);
