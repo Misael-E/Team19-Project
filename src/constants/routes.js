@@ -10,5 +10,5 @@ export const ADMIN_ROLE_CHANGE = '/admin/:id/changerole';
 export const RESEARCHER = '/researcher';
 export const REVIEWER = '/reviewer';
 export const EDITOR = '/editor';
-export const VIEW_RESEARCHER_DETAILS = '/:role/:id';
-export const VIEW_REVIEWER_DETAILS = '/:role/:id';
+export const VIEW_RESEARCHER_DETAILS = '/editor/:id';
+export const VIEW_REVIEWER_DETAILS = '/editor/:id';
