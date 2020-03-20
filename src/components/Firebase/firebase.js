@@ -84,6 +84,14 @@ class Firebase {
 
   users = () => this.db.ref('users');
 
+  // *** Paper API ***
+
+  emptyRef = () => this.db.ref();
+
+  papers = () => this.db.ref('papers');
+
+  paper = paperID => this.db.ref('papers/${paperID}');
+
 }
 
 export default Firebase;
