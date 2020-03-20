@@ -86,11 +86,13 @@ class Firebase {
 
   // *** Paper API ***
 
+  specifiedRef = refLocation => this.db.ref(`${refLocation}`);
+
   emptyRef = () => this.db.ref();
 
   papers = () => this.db.ref('papers');
 
-  paper = paperID => this.db.ref('papers/${paperID}');
+  paper = paperID => this.db.ref(`papers/${paperID}`);
 
 }
 

@@ -8,12 +8,16 @@ import * as ROLES from '../../../constants/roles';
 import * as ROUTES from '../../../constants/routes';
 import Firebase from '../../Firebase';
 import PapersList from './PapersList';
+import PaperItem from './PaperItem';
 
 const EditorPage = () => (
 
   <div>
     <h1>Editor</h1>
-    <PapersList></PapersList>
+    <Switch>
+      <Route exact path={ROUTES.EDITOR} component={PapersList} />
+      <Route exact path={ROUTES.VIEW_PAPER_DETAILS} component={PaperItem} />
+    </Switch>
     <Switch>
       <Route exact path={ROUTES.EDITOR} component={ResearcherList} />
       <Route exact path={ROUTES.VIEW_RESEARCHER_DETAILS} component={ResearcherItem} />

@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import { withFirebase } from '../../Firebase';
+import * as ROUTES from '../../../constants/routes';
+import * as ROLES from '../../../constants/roles';
 import './papersList.css';
 
 class PapersList extends Component {
@@ -33,6 +37,8 @@ class PapersList extends Component {
     });
 
 
+  
+
     // var newPostKey = this.props.firebase.emptyRef().child('papers').push().key;
 
     // var deadlineDate = new Date(2020, 11, 1, 23, 59);
@@ -57,6 +63,7 @@ class PapersList extends Component {
     // //     title : 'myTitle'
     // // });
     
+    // }
 
 
   }
@@ -74,12 +81,23 @@ class PapersList extends Component {
                 <th>Paper</th>
                 <th>Author</th>
                 <th>Deadline</th>
+                <th></th>
               </tr>
           {this.state.papers.map(paper => (
               <tr key={paper.paperID}>
                 <td>{paper.title}</td>
                 <td>{paper.author}</td>
                 <td>{(new Date(paper.deadline)).toString()}</td>
+                <td>
+                    <Link
+                      to={{
+                        pathname: `${ROUTES.EDITOR}/${paper.paperID}`,
+                        state: { paper },
+                      }}
+                    >
+                      View/Edit
+                    </Link>
+                </td>
               </tr>
             // <li key={paper.paperID}>
             //   {/* <span>
