@@ -4,11 +4,13 @@
 First, install nodejs from https://nodejs.org/en/
 
 ### `install packages`
-Install these packages by typing these commands in console.<br/>
+Install these packages by typing these commands in console. Make sure you are in the directory of the project.<br/>
 
 npm install --save firebase <br/>
 npm install react-router-dom <br/>
 npm install recompose <br/>
+npm i --save @fortawesome/fontawesome-svg-core  @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome <br/>
+
 
 Update this if you install any packages. 
 
