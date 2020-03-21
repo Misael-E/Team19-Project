@@ -27,6 +27,9 @@ class ResearcherList extends Component {
           uid: key,
         }));
 
+        console.log(Object.keys(usersObject));
+        console.log(usersList);
+
         this.setState({
           users: usersList,
           loading: false,
