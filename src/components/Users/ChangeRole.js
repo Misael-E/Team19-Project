@@ -17,6 +17,10 @@ const INITIAL_STATE = {
   error: null,
 };
 
+const ERROR_CODE_NO_SELECTION = 'auth/argument-error';
+
+const ERROR_MSG_NO_SELECTION = 'No role selected.';
+
 class ChangeRole extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +52,6 @@ class ChangeRole extends Component {
       this.setState({ ...INITIAL_STATE });
       this.props.history.push(ROUTES.ADMIN_ROLE_CHANGE);
     });
-
 
   };
   onChange = event => {
@@ -88,6 +91,25 @@ class ChangeRole extends Component {
       isReviewer,
       isResearcher,
       isNone} = this.state;
+
+    let button;
+    if (isEditor || isReviewer || isResearcher || isNone) {
+      button = <button className="updatebtn" type="submit">
+        Update
+      </button>;
+    }
+    let noneCheck;
+    if (!isEditor && !isReviewer && !isResearcher) {
+      noneCheck = <label>
+        None:
+        <input
+          name="isNone"
+          type="checkbox"
+          checked={isNone}
+          onChange={this.onChangeCheckbox}
+        />
+      </label>;
+    }
 
     return (
       <div>
@@ -136,18 +158,8 @@ class ChangeRole extends Component {
             onChange={this.onChangeCheckbox}
           />
         </label>
-        <label>
-          None:
-          <input
-            name="isNone"
-            type="checkbox"
-            checked={isNone}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
-          <button className="updatebtn" type="submit">
-            Update
-          </button>
+          {noneCheck}
+          {button}
 
           {error && <p>{error.message}</p>}
           </div>
