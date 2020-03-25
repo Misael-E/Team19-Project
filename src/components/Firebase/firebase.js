@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 
 const config = {
     apiKey: "AIzaSyDVWMu9TRcjtW_dtjdq-TvnRicfNDqNCw4",
@@ -26,7 +27,7 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
-
+    this.storage = app.storage();
   }
 
   doCreateUserWithEmailAndPassword = (email, password) =>
@@ -93,6 +94,10 @@ class Firebase {
   papers = () => this.db.ref('papers');
 
   paper = paperID => this.db.ref(`papers/${paperID}`);
+
+  // *** Storage API ***
+
+  storagePdf = () => this.storage.ref('pdf');
 
 }
 
