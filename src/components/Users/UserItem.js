@@ -7,6 +7,7 @@ import * as ROLES from '../../constants/roles';
 
 import './useritem.css';
 
+
 class UserItem extends Component {
   constructor(props) {
     super(props);
@@ -46,6 +47,20 @@ class UserItem extends Component {
   render() {
     const { user, loading } = this.state;
 
+    let link;
+    if (!user.roles[ROLES.ADMIN]){
+      link = <Link
+        to={{
+          pathname: `${ROUTES.ADMIN}/${user.uid}/changerole`,
+          state: { user },
+        }}
+      >
+        Change Role
+      </Link>;
+    } else {
+      link = <strong>Administrators can't change role</strong>
+    }
+
     return (
       <div>
         <h2 className="user">User: ({this.props.match.params.id})</h2>
@@ -83,14 +98,7 @@ class UserItem extends Component {
               </button>
             </span>
             <span>
-              <Link
-                to={{
-                  pathname: `${ROUTES.ADMIN}/${user.uid}/changerole`,
-                  state: { user },
-                }}
-              >
-                Change Role
-              </Link>
+              {link}
             </span>
           </div>
         )}
