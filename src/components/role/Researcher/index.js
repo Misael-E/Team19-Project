@@ -12,8 +12,9 @@ class ResearcherPage extends Component {
     this.state = {
       pdf: null,
       url: "",
-      progress: 0
-    };
+      progress: 0,
+      user: ""
+    }
   }
 
   handleChange = e => {
@@ -28,7 +29,6 @@ class ResearcherPage extends Component {
     const filename = pdf.name;
     const storageRef = firebase.storage().ref('/pdf/' + filename);
     const uploadTask = storageRef.put(pdf);
-
 
     uploadTask.on(
       "state_changed",
@@ -45,16 +45,25 @@ class ResearcherPage extends Component {
       },
       () => {
         // complete function ...
-        firebase.storage()
-          .ref("pdf/")
-          .child(pdf.name)
-          .getDownloadURL()
-          .then(url => {
+        firebase.storage().ref("pdf/").child(pdf.name).getDownloadURL().then(url => {
             this.setState({ url });
+            var postKey = firebase.database().ref('Submissions').push().key;
+            var user = firebase.auth().currentUser.uid;
+            var updates = {};
+            var postData = {
+              downloadURL: url,
+              user: firebase.auth().currentUser.uid
+            };
+            updates['/Submissions/' + postKey] = postData;
+            firebase.database().ref().update(updates);
           });
-      }
+      },
     );
   };
+  handleDownload = () => {
+    window.open(this.state.url);
+  }
+
   render() {
     return (
       <div>
@@ -81,6 +90,12 @@ class ResearcherPage extends Component {
             className="waves-effect waves-light btn"
           >
             Upload
+          </button>
+          <button
+            onClick={this.handleDownload}
+            className="waves-effect waves-light btn"
+          >
+            Download
           </button>
         </div>
       </div>
