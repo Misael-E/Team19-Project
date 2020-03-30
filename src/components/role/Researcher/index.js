@@ -17,7 +17,7 @@ const ResearcherPage = () => (
 
 );
 
-/*
+
 class ResearcherPage extends Component {
   constructor(props) {
     super(props);
@@ -114,7 +114,6 @@ class ResearcherPage extends Component {
     );
   }
 }
-*/
 const condition = authUser => !!authUser;
 
 export default compose(
