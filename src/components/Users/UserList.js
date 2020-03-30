@@ -7,9 +7,6 @@ import * as ROLES from '../../constants/roles';
 
 import './users.css';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser,faEnvelope, faIdBadge, faUserTag } from '@fortawesome/free-solid-svg-icons';
-
 class UserList extends Component {
   constructor(props) {
     super(props);
@@ -48,64 +45,44 @@ class UserList extends Component {
     const { users, loading } = this.state;
 
     return (
-      <body>
-        <div>
-          <h2 className="user">Users</h2>
-          {loading && <div className="loading">Loading ...</div>}
-          <ul className="list">
-            {users.map(user => (
-              <li key={user.uid}>
-                <span>
-                  <i>
-                  <FontAwesomeIcon icon={faIdBadge} />
-                  </i>
-                  <strong>ID:</strong> {user.uid}
-                </span>
-                <span>
-                  <i>
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  </i>
-                  <strong>E-Mail:</strong> {user.email}
-                </span>
-                <span>
-                  <i>
-                  <FontAwesomeIcon icon={faUser} />
-                  </i>
-                  <strong>First Name:</strong> {user.firstName}
-                </span>
-                <span>
-                  <i>
-                  <FontAwesomeIcon icon={faUser} />
-                  </i>
-                  <strong>Last Name:</strong> {user.lastName}
-                </span>
-                <span>
-                  <i>
-                  <FontAwesomeIcon icon={faUserTag} />
-                  </i>
-                  <strong>Role:</strong>
-                  {user.roles[ROLES.ADMIN]}
-                  {user.roles[ROLES.EDITOR]}
-                  {user.roles[ROLES.REVIEWER]}
-                  {user.roles[ROLES.RESEARCHER]}
-                  {user.roles[ROLES.NONE]}
-                </span>
-                <span className="det">
-                  <Link
-                    to={{
-                      pathname: `${ROUTES.ADMIN}/${user.uid}`,
-                      state: { user },
-                    }}
-                  >
-                    Details
-                  </Link>
-                </span>
-              </li>
+      <div>
+      {loading && <div>Loading ...</div>}
+        <table>
+              <tr>
+                <th>ID</th>
+                <th>E-Mail</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Role</th>
+                <th></th>
+              </tr>
+          {users.map(user => (
+              <tr key={user.uid}>
+                <td>{user.uid}</td>
+                <td>{user.email}</td>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
+                <td>{user.roles[ROLES.ADMIN]}
+                    {user.roles[ROLES.EDITOR]}
+                    {user.roles[ROLES.REVIEWER]}
+                    {user.roles[ROLES.RESEARCHER]}
+                    {user.roles[ROLES.NONE]}</td>
+                    <td>
+                      <Link
+                        to={{
+                          pathname: `${ROUTES.ADMIN}/${user.uid}`,
+                          state: { user },
+                        }}
+                      >
+                        Details
+                      </Link>
+                    </td>
+                </tr>
             ))}
-          </ul>
+          </table>
+
         </div>
-      </body>
-    );
+    )
   }
 }
 

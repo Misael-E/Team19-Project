@@ -27,7 +27,7 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
-
+    this.storage = app.storage();
   }
 
   doCreateUserWithEmailAndPassword = (email, password) =>
@@ -94,6 +94,10 @@ class Firebase {
   papers = () => this.db.ref('papers');
 
   paper = paperID => this.db.ref(`papers/${paperID}`);
+
+  // *** Storage API ***
+
+  storagePdf = () => this.storage.ref('pdf');
 
 }
 

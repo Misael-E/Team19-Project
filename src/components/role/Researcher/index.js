@@ -1,11 +1,23 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withAuthorization, withEmailVerification } from '../../Session';
-import * as firebase from 'firebase/app';
+import { SubmissionRequestForm } from '../../Submission';
+import * as ROLES from '../../../constants/roles';
+import * as ROUTES from '../../../constants/routes';
 
 import './res.css';
 
+const ResearcherPage = () => (
+  <div>
+    <h1 className="researcher"> Researcher </h1>
+    <Route exact path={ROUTES.RESEARCHER} component={SubmissionRequestForm} />
+  </div>
+
+);
+
+/*
 class ResearcherPage extends Component {
   constructor(props) {
     super(props);
@@ -102,7 +114,7 @@ class ResearcherPage extends Component {
     );
   }
 }
-
+*/
 const condition = authUser => !!authUser;
 
 export default compose(
