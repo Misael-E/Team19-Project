@@ -18,38 +18,6 @@ const ResearcherPage = () => (
 );
 
 
-  render() {
-    return (
-      <div>
-        <h1 className="researcher">Researcher</h1>
-        <div className="center">
-            <br/>
-            <h2 className="green-text">Journal Submissions</h2>
-            <br/>
-            <br/>
-          <div className="row">
-            <progress value={this.state.progress} max="100" className="progress" />
-          </div>
-          <br/>
-          <div className="file-field input-field">
-            <div className="btn">
-              <span>Choose a PDF</span>
-              <input type="file" accept="application/pdf" onChange={this.handleChange} />
-            </div>
-            <div className="file-path-wrapper">
-            </div>
-          </div>
-          <button
-            onClick={this.handleUpload}
-            className="waves-effect waves-light btn"
-          >
-            Upload
-          </button>
-        </div>
-      </div>
-    );
-  }
-}
 const condition = authUser => !!authUser;
 
 export default compose(
