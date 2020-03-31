@@ -18,64 +18,6 @@ const ResearcherPage = () => (
 );
 
 
-class ResearcherPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pdf: null,
-      url: "",
-      progress: 0,
-      user: ""
-    }
-  }
-
-  handleChange = e => {
-    if (e.target.files[0]) {
-      const pdf = e.target.files[0];
-      this.setState(() => ({ pdf }));
-    }
-  };
-
-  handleUpload = () => {
-    const { pdf } = this.state;
-    const filename = pdf.name;
-    const storageRef = firebase.storage().ref('/pdf/' + filename);
-    const uploadTask = storageRef.put(pdf);
-
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        // progress function ...
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        this.setState({ progress });
-      },
-      error => {
-        // Error function ...
-        console.log(error);
-      },
-      () => {
-        // complete function ...
-        firebase.storage().ref("pdf/").child(pdf.name).getDownloadURL().then(url => {
-            this.setState({ url });
-            var postKey = firebase.database().ref('Submissions').push().key;
-            var user = firebase.auth().currentUser.uid;
-            var updates = {};
-            var postData = {
-              downloadURL: url,
-              user: firebase.auth().currentUser.uid
-            };
-            updates['/Submissions/' + postKey] = postData;
-            firebase.database().ref().update(updates);
-          });
-      },
-    );
-  };
-  handleDownload = () => {
-    window.open(this.state.url);
-  }
-
   render() {
     return (
       <div>
@@ -102,12 +44,6 @@ class ResearcherPage extends Component {
             className="waves-effect waves-light btn"
           >
             Upload
-          </button>
-          <button
-            onClick={this.handleDownload}
-            className="waves-effect waves-light btn"
-          >
-            Download
           </button>
         </div>
       </div>
