@@ -81,7 +81,9 @@ class SubmissionRequestForm extends Component {
       }
     );
   };
-
+  handleDownload = () => {
+    window.open(this.state.url);
+  }
 
   render() {
     const {
@@ -122,11 +124,17 @@ class SubmissionRequestForm extends Component {
             >
               Upload
             </button>
-
-            <form onSubmit={this.onSubmit}>
-              <button className="btn" type="submit">
-                  Request Submission
+                <button
+                  onClick={this.handleDownload}
+                  className="waves-effect waves-light btn"
+                >
+                  Download
                 </button>
+  
+              <form onSubmit={this.onSubmit}>
+                <button className="btn" type="submit">
+                    Request Submission
+                  </button>
             </form>
 
         </div>
