@@ -76,16 +76,6 @@ class SubmissionRequestForm extends Component {
   }
 
   render() {
-    const {
-      author = 'test',
-      deadline = 'test',
-      title = 'test',
-      pdf = 'test',
-      url = 'test',
-      progress = 0
-    } = this.state;
-
-
 
     return (
       <div>
