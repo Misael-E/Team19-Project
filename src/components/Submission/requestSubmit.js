@@ -22,22 +22,7 @@ class SubmissionRequestForm extends Component {
 
     this.state = { ...INITIAL_STATE };
   }
-  onSubmit = event => {
-    const { author, deadline, title, pdf, url, progress } = this.state;
 
-
-    this.props.firebase.papers().push({
-      author,
-      deadline,
-      title,
-      pdf,
-      url,
-      progress,
-    })
-    .then(() => {
-      this.setState({ ...INITIAL_STATE });
-    });
-  };
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -71,12 +56,17 @@ class SubmissionRequestForm extends Component {
       },
       () => {
         // complete function ...
-        this.props.firebase.storage
-          .ref('pdf')
-          .child(filename)
-          .getDownloadURL()
-          .then(url => {
+        this.props.firebase.storage.ref("pdf/").child(filename).getDownloadURL().then(url => {
             this.setState({ url });
+            var postKey = this.props.firebase.db.ref('Submissions').push().key;
+            var user = this.props.firebase.auth.currentUser.uid;
+            var updates = {};
+            var postData = {
+              downloadURL: url,
+              user: this.props.firebase.auth.currentUser.uid
+            };
+            updates['/Submissions/' + postKey] = postData;
+            this.props.firebase.db.ref().update(updates);
           });
       }
     );
@@ -130,12 +120,6 @@ class SubmissionRequestForm extends Component {
                 >
                   Download
                 </button>
-  
-              <form onSubmit={this.onSubmit}>
-                <button className="btn" type="submit">
-                    Request Submission
-                  </button>
-            </form>
 
         </div>
       </div>
