@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './papersList.css';
+import './submissionsList.css';
 
 import { withFirebase } from '../../Firebase';
 
-class PaperItem extends Component {
+class SubmissionItem extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       viewOnly: true,
-      paper: null,
+      submission: null,
       ...props.location.state,
-      newDeadline: new Date(props.location.state.paper.deadline),
+      newDeadline: new Date(props.location.state.submission.deadline),
       savedChangesMsg: ''
     };
 
@@ -28,15 +28,15 @@ class PaperItem extends Component {
   };
 
   componentDidMount() {
-    if (this.state.paper) {
+    if (this.state.submission) {
       return;
     }
 
     this.props.firebase
-      .paper(this.props.match.params.id)
+      .submission(this.props.match.params.id)
       .on('value', snapshot => {
         this.setState({
-          paper: snapshot.val(),
+          submission: snapshot.val(),
         });
       });
   }
@@ -45,28 +45,28 @@ class PaperItem extends Component {
     // here you know which component is that, so you can call parent method
     // this.props.update(this.props.data.id);
 
-    // var newPostKey = this.props.firebase.emptyRef().child('papers').push().key;
+    // var newPostKey = this.props.firebase.emptyRef().child('submissions').push().key;
 
     // var deadlineDate = new Date(2020, 11, 1, 23, 59);
 
-    const paperKey = this.props.match.params.id;
-    console.log('papers/' + paperKey);
+    const submissionKey = this.props.match.params.id;
+    console.log('submissions/' + submissionKey);
 
     // var postData = {
-      // title: this.state.paper.title,
-      // author: this.state.paper.author,
+      // title: this.state.submission.title,
+      // author: this.state.submission.author,
       // deadline: this.state.newDeadline.getTime()
     // };
-  
+
     console.log(this.state.newDeadline.getTime());
 
     // var updates = {};
-    // updates['/papers/' + newPostKey] = postData;
+    // updates['/submissions/' + newPostKey] = postData;
     // // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
-    this.props.firebase.specifiedRef('papers/' + paperKey).set({
-      title: this.state.paper.title,
-      author: this.state.paper.author,
+    this.props.firebase.specifiedRef('submissions/' + submissionKey).set({
+      title: this.state.submission.title,
+      // author: this.state.submission.author,
       deadline: this.state.newDeadline.getTime()
     },
     function(error) {
@@ -81,10 +81,10 @@ class PaperItem extends Component {
     ).then(() => {
 
       this.props.firebase
-      .paper(this.props.match.params.id)
+      .submission(this.props.match.params.id)
       .once('value', snapshot => {
         this.setState({
-          paper: snapshot.val(),
+          submission: snapshot.val(),
           savedChangesMsg: 'Changes saved!'
         });
       });
@@ -95,11 +95,11 @@ class PaperItem extends Component {
 
 
   }
-  
+
 
   // db.push().set(values).then(() => {
   //   console.log('Successfully set');
-  
+
   //   db.once('value').then((snap) => {
   //     console.log(snap);
   //   });
@@ -119,30 +119,30 @@ class PaperItem extends Component {
   // }
 
   componentWillUnmount() {
-    this.props.firebase.paper(this.props.match.params.id).off();
+    this.props.firebase.submission(this.props.match.params.id).off();
   }
 
 
   render() {
-    const { paper } = this.state;
+    const { submission } = this.state;
 
     return (
       <div>
-        <h2>{paper.title}</h2>
-        {paper && (
+        <h2>{submission.title}</h2>
+        {submission && (
           <div>
             <table>
               <tr>
                   <th>Submission Title: </th>
-                  <td>{paper.title}</td>
+                  <td>{submission.title}</td>
               </tr>
               <tr>
-                  <th>Author: </th>
-                  <td>{paper.author}</td>
+                  {/* <th>Author: </th> */}
+                  {/* <td>{submission.author}</td> */}
               </tr>
               <tr>
                   <th>Deadline: </th>
-                  <td>{(new Date(paper.deadline)).toString()}</td>
+                  <td>{(new Date(submission.deadline)).toString()}</td>
               </tr>
               <tr>
                   <th>Enter a new deadline: </th>
@@ -159,14 +159,14 @@ class PaperItem extends Component {
             {this.state.savedChangesMsg}
 
             {/* <span>
-              <strong>Title: </strong>  {paper.title}
+              <strong>Title: </strong>  {submission.title}
             </span>
             <span>
-              <strong>Author: </strong>  {paper.author}
+              <strong>Author: </strong>  {submission.author}
             </span>
             <span>
               <strong>Deadline:</strong> {
-                    (new Date(paper.deadline)).toString()
+                    (new Date(submission.deadline)).toString()
                   }
             </span>
             <span>
@@ -182,4 +182,5 @@ class PaperItem extends Component {
   }
 }
 
-export default withFirebase(PaperItem);
+export default withFirebase(SubmissionItem);
+© 2020 GitHub, Inc.
