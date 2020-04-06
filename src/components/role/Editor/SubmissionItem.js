@@ -50,7 +50,7 @@ class SubmissionItem extends Component {
     // var deadlineDate = new Date(2020, 11, 1, 23, 59);
 
     const submissionKey = this.props.match.params.id;
-    console.log('submissions/' + submissionKey);
+    console.log('Submissions/' + submissionKey);
 
     // var postData = {
       // title: this.state.submission.title,
@@ -64,7 +64,7 @@ class SubmissionItem extends Component {
     // updates['/submissions/' + newPostKey] = postData;
     // // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
-    this.props.firebase.specifiedRef('submissions/' + submissionKey).set({
+    this.props.firebase.specifiedRef('Submissions/' + submissionKey).set({
       title: this.state.submission.title,
       // author: this.state.submission.author,
       deadline: this.state.newDeadline.getTime()

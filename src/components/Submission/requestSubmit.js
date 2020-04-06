@@ -10,7 +10,7 @@ import './sub.css';
 
 const INITIAL_STATE = {
   author: '',
-  deadline: '',
+  deadline: 0,
   title: '',
   user: null,
   firstName: '',
@@ -26,6 +26,14 @@ class SubmissionRequestForm extends Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
+  }
+
+  onSubmit = event => {
+    const { deadline, title } = this.state;
+    this.props.firebase.submission(this.props.match.params.id).push({
+      deadline,
+      title,
+    })
   }
 
   onChange = event => {
@@ -105,7 +113,11 @@ class SubmissionRequestForm extends Component {
   render() {
 
     const { user,
-            loading } = this.state;
+            loading,
+            title,
+            downloadURL,
+            deadline, } = this.state;
+
 
     return (
       <div>
@@ -135,12 +147,17 @@ class SubmissionRequestForm extends Component {
             >
               Upload
             </button>
-                <button
-                  onClick={this.handleDownload}
-                  className="waves-effect waves-light btn"
-                >
-                  Download
+            <button
+              onClick={this.handleDownload}
+              className="waves-effect waves-light btn"
+            >
+              Download
+            </button>
+            <form onSubmit={this.onSubmit}>
+              <button className="btn"  type="submit">
+                  Submit Request
                 </button>
+            </form>
 
         </div>
       )}
