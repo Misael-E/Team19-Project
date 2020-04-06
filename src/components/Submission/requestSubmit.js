@@ -7,11 +7,16 @@ import * as ROLES from '../../constants/roles';
 
 import './sub.css';
 
+
 const INITIAL_STATE = {
   author: '',
   deadline: '',
   title: '',
-  user: '',
+  user: null,
+  firstName: '',
+  lastName: '',
+  loading: false,
+  userID: '',
   downloadURL: "",
   progress: 0,
 };
@@ -58,10 +63,10 @@ class SubmissionRequestForm extends Component {
         // complete function ...
         this.props.firebase.storagePdf().child(filename).getDownloadURL().then(url => {
             this.setState({ url });
-            var user = this.props.firebase.auth.currentUser.uid;
+            var userID = this.props.firebase.auth.currentUser.uid;
             var downloadURL = url;
             this.props.firebase.submissions().push({
-              user,
+              userID,
               downloadURL,
             });
           });
@@ -72,17 +77,46 @@ class SubmissionRequestForm extends Component {
     window.open(this.state.url);
   }
 
+  componentDidMount() {
+    if (this.state.user) {
+      return;
+    }
+
+    this.props.firebase.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.props.firebase
+        .user(authUser.uid)
+        .on('value', snapshot => {
+          this.setState({
+            user: snapshot.val(),
+            loading: false,
+          });
+        });
+      } else {
+        console.log("error");
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.user().off();
+  }
+
   render() {
+
+    const { user,
+            loading } = this.state;
 
     return (
       <div>
-        <h1 className="submission">Start Your Submission</h1>
+
+        {user && (
         <div className="center">
             <br/>
             <h2 className="green-text">Journal Submissions</h2>
             <br/>
             <br/>
-
+            <span> Author: {user.firstName} {user.lastName} </span>
             <div className="row">
               <progress value={this.state.progress} max="100" className="progress" />
             </div>
@@ -109,6 +143,7 @@ class SubmissionRequestForm extends Component {
                 </button>
 
         </div>
+      )}
       </div>
     );
   }
