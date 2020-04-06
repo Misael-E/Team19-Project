@@ -7,16 +7,16 @@ import { ResearcherList, ResearcherItem, ReviewerList, ReviewerItem } from '../.
 import * as ROLES from '../../../constants/roles';
 import * as ROUTES from '../../../constants/routes';
 import Firebase from '../../Firebase';
-import PapersList from './PapersList';
-import PaperItem from './PaperItem';
+import SubmissionsList from './SubmissionsList';
+import SubmissionItem from './SubmissionItem';
 
 const EditorPage = () => (
 
   <div>
     <h1>Editor</h1>
     <Switch>
-      <Route exact path={ROUTES.EDITOR} component={PapersList} />
-      <Route exact path={ROUTES.VIEW_PAPER_DETAILS} component={PaperItem} />
+      <Route exact path={ROUTES.EDITOR} component={SubmissionsList} />
+      <Route exact path={ROUTES.VIEW_SUBMISSION_DETAILS} component={SubmissionItem} />
     </Switch>
     {/* <Switch>
       <Route exact path={ROUTES.EDITOR} component={ResearcherList} />

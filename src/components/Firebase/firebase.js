@@ -91,9 +91,9 @@ class Firebase {
 
   emptyRef = () => this.db.ref();
 
-  papers = () => this.db.ref('papers');
+  submissions = () => this.db.ref('Submissions');
 
-  paper = paperID => this.db.ref(`papers/${paperID}`);
+  submission = submissionID => this.db.ref(`Submissions/${submissionID}`);
 
   // *** Storage API ***
 
