@@ -12,4 +12,4 @@ export const REVIEWER = '/reviewer';
 export const EDITOR = '/editor';
 export const VIEW_RESEARCHER_DETAILS = '/:role/:id';
 export const VIEW_REVIEWER_DETAILS = '/:role/:id';
-export const VIEW_PAPER_DETAILS = '/:role/:id'
+export const VIEW_SUBMISSION_DETAILS = '/:role/:id'

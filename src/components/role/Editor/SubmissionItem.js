@@ -183,4 +183,3 @@ class SubmissionItem extends Component {
 }
 
 export default withFirebase(SubmissionItem);
-© 2020 GitHub, Inc.

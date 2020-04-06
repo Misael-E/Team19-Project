@@ -11,8 +11,8 @@ const INITIAL_STATE = {
   author: '',
   deadline: '',
   title: '',
-  pdf: "null",
-  url: "",
+  user: '',
+  downloadURL: "",
   progress: 0,
 };
 
@@ -56,17 +56,14 @@ class SubmissionRequestForm extends Component {
       },
       () => {
         // complete function ...
-        this.props.firebase.storage.ref("pdf/").child(filename).getDownloadURL().then(url => {
+        this.props.firebase.storagePdf().child(filename).getDownloadURL().then(url => {
             this.setState({ url });
-            var postKey = this.props.firebase.db.ref('Submissions').push().key;
             var user = this.props.firebase.auth.currentUser.uid;
-            var updates = {};
-            var postData = {
-              downloadURL: url,
-              user: this.props.firebase.auth.currentUser.uid
-            };
-            updates['/Submissions/' + postKey] = postData;
-            this.props.firebase.db.ref().update(updates);
+            var downloadURL = url;
+            this.props.firebase.submissions().push({
+              user,
+              downloadURL,
+            });
           });
       }
     );
