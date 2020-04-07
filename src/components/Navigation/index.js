@@ -87,7 +87,7 @@ const NavigationNonAuth = () => (
         <img className="logo" src={lightbulb} alt=""/>
         <h2 className="head">uScholar</h2>
       </div>
-      <ul className="nav-links">  
+      <ul className="nav-links">
         <li className="nav-links">
           <Link to={ROUTES.LANDING}>uScholar</Link>
         </li>

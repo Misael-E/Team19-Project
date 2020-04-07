@@ -3,22 +3,20 @@ import React, { Component } from 'react';
 import { AuthUserContext } from '../Session';
 import Firebase, { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
 
 import './sub.css';
 
-
 const INITIAL_STATE = {
-  author: '',
   deadline: 0,
   title: '',
-  user: null,
-  firstName: '',
-  lastName: '',
-  loading: false,
   userID: '',
   downloadURL: "",
   progress: 0,
+  pdf: null,
+  status: 'in progress',
+  hasError: false,
+  rev1: '',
+  revEmail: '',
 };
 
 class SubmissionRequestForm extends Component {
@@ -26,14 +24,6 @@ class SubmissionRequestForm extends Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
-  }
-
-  onSubmit = event => {
-    const { deadline, title } = this.state;
-    this.props.firebase.submission(this.props.match.params.id).push({
-      deadline,
-      title,
-    })
   }
 
   onChange = event => {
@@ -48,38 +38,52 @@ class SubmissionRequestForm extends Component {
   };
 
   handleUpload = () => {
-    const { pdf } = this.state;
-    const filename = pdf.name;
-    const storageRef = this.props.firebase.storage.ref(`pdf/${filename}`);
-    const uploadTask = storageRef.put(pdf);
+    try {
+      const { pdf, deadline, title, email, status, rev1 } = this.state;
+      const reviewers = {};
+      const filename = pdf.name;
+      const storageRef = this.props.firebase.storage.ref(`pdf/${filename}`);
+      const uploadTask = storageRef.put(pdf);
 
+      reviewers['rev1'] = rev1;
 
-    uploadTask.on(
-      'state_changed',
-      snapshot => {
-        // progress function ...
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        this.setState({ progress });
-      },
-      error => {
-        // Error function ...
-        console.log(error);
-      },
-      () => {
-        // complete function ...
-        this.props.firebase.storagePdf().child(filename).getDownloadURL().then(url => {
-            this.setState({ url });
-            var userID = this.props.firebase.auth.currentUser.uid;
-            var downloadURL = url;
-            this.props.firebase.submissions().push({
-              userID,
-              downloadURL,
+      uploadTask.on(
+        'state_changed',
+        snapshot => {
+          // progress function ...
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          this.setState({ progress });
+        },
+        error => {
+          // Error function ...
+          console.log(error);
+        },
+        () => {
+          // complete function ...
+          this.props.firebase.storagePdf().child(filename).getDownloadURL().then(url => {
+              this.setState({ url });
+              var userID = this.props.firebase.auth.currentUser.uid;
+              var downloadURL = url;
+              this.props.firebase.submissions().push({
+                userID,
+                downloadURL,
+                deadline,
+                title,
+                email,
+                status,
+                reviewers,
+              });
+            }).then(() => {
+              this.setState({ ...INITIAL_STATE });
+              this.props.history.push(ROUTES.RESEARCHER);
             });
-          });
-      }
-    );
+        }
+      );
+    } catch(e) {
+       console.log('Error');
+    }
   };
   handleDownload = () => {
     window.open(this.state.url);
@@ -97,7 +101,7 @@ class SubmissionRequestForm extends Component {
         .on('value', snapshot => {
           this.setState({
             user: snapshot.val(),
-            loading: false,
+            email: snapshot.val().email,
           });
         });
       } else {
@@ -113,11 +117,9 @@ class SubmissionRequestForm extends Component {
   render() {
 
     const { user,
-            loading,
             title,
-            downloadURL,
-            deadline, } = this.state;
-
+            revEmail,
+          } = this.state;
 
     return (
       <div>
@@ -128,6 +130,17 @@ class SubmissionRequestForm extends Component {
             <h2 className="green-text">Journal Submissions</h2>
             <br/>
             <br/>
+            <form handleUpload={this.handleUpload}>
+              <div className="textbox">
+              <input
+                name="title"
+                value={title}
+                onChange={this.onChange}
+                type="text"
+                placeholder="Title"
+              />
+              </div>
+            </form>
             <span> Author: {user.firstName} {user.lastName} </span>
             <div className="row">
               <progress value={this.state.progress} max="100" className="progress" />
@@ -145,7 +158,7 @@ class SubmissionRequestForm extends Component {
               onClick={this.handleUpload}
               className="waves-effect waves-light btn"
             >
-              Upload
+              Submit Request
             </button>
             <button
               onClick={this.handleDownload}
@@ -153,11 +166,6 @@ class SubmissionRequestForm extends Component {
             >
               Download
             </button>
-            <form onSubmit={this.onSubmit}>
-              <button className="btn"  type="submit">
-                  Submit Request
-                </button>
-            </form>
 
         </div>
       )}
