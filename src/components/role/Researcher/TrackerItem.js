@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../../constants/routes';
+import * as ROLES from '../../../constants/roles';
+
+import './trackeritem.css';
 
 class TrackerItem extends Component {
   constructor(props) {
@@ -10,83 +13,92 @@ class TrackerItem extends Component {
 
     this.state = {
       loading: false,
-      papers: [],    
+      searching: false,
+      paper: null,
       revEmail: '',
+      ...props.location.state,
     };
   }
 
-  requestReviewer = search => {
-    const { revEmail } = this.state;
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  requestReviewer = event => {
+    const { revEmail, rev1 } = this.state;
+    const reviewers = {};
     try {
-      this.props.firebase.user().orderByChild('email').equalTo(revEmail).on('value', snapshot => {
+      this.setState({ searching: true });
+      console.log(revEmail + ' acknowledged');
+      this.props.firebase.users().orderByChild('email').equalTo(revEmail).on('value', snapshot => {
         if (snapshot.exists()) {
+          console.log(snapshot.val());
           this.setState({
-            rev1: snapshot.val().uid,
+            rev1: snapshot.val(),
+            searching: false,
           });
         }
+        console.log('rev doesnt exist');
       })
+      console.log(this.state.rev1);
+      reviewers['rev1'] = this.state.rev1;
+      this.props.firebase.submission(this.props.match.params.id).update({'reviewers': rev1, });
+      console.log(revEmail + ' successfully added');
     } catch (e) {
-      console.log('Error');
+      console.log('Reviewer not added');
       e.message = `Reviewer not found`;
     }
+
   }
 
   componentDidMount() {
+    if (this.state.paper) {
+      return;
+    }
+
     this.setState({ loading: true });
 
-    this.props.firebase.auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        this.props.firebase.submissions().orderByChild('userID').equalTo(this.props.firebase.auth.currentUser.uid)
-          .on('value', snapshot => {
-          if (snapshot.exists()) {
-            const papersObject = snapshot.val();
-
-            const paperList = Object.keys(papersObject).map(key => ({
-              ...papersObject[key],
-              uid: key,
-            }));
-
-            this.setState({
-              papers: paperList,
-              loading: false,
-            });
-          };
+    this.props.firebase
+      .submission(this.props.match.params.id)
+      .on('value', snapshot => {
+        this.setState({
+          paper: snapshot.val(),
+          loading: false,
         });
-      } else {
-        console.log("error");
-      }
-    })
+      });
   }
 
   componentWillUnmount() {
-    this.props.firebase.submissions().off();
+    this.props.firebase.submission(this.props.match.params.id).off();
   }
 
   render() {
-    const { papers, loading } = this.state;
+    const { paper, loading, searching, revEmail } = this.state;
 
     return (
       <div>
-      <h1> Track Your Submissions </h1>
-      {loading && <div>Loading ...</div>}
-        <table>
-              <tr>
-                <th>Submission ID</th>
-                <th>E-Mail</th>
-                <th>Status</th>
-                <th>Title</th>
-                <th></th>
-              </tr>
-          {papers.map(paper => (
-              <tr key={paper.uid}>
-                <td>{paper.userID}</td>
-                <td>{paper.email}</td>
-                <td>{paper.status}</td>
-                <td>{paper.title}</td>
-
-                </tr>
-            ))}
-          </table>
+      <h2 className="user"> Submission Details ({this.props.match.params.id}) </h2>
+      {loading && <div className="loading"> Loading ...</div>}
+      {paper && (
+        <div className="list">
+          <span>
+            <strong>Submission ID:</strong> {paper.uid}
+          </span>
+          <span>
+            <strong>E-Mail:</strong> {paper.email}
+          </span>
+          <span>
+            <strong>Status:</strong> {paper.status}
+          </span>
+          <span>
+            <strong>Title:</strong> {paper.title}
+          </span>
+          <span>
+            <strong>Reviewers:</strong>
+              {paper.rev1}
+              {paper.rev2}
+              {paper.rev3}
+          </span>
           <form requestReviewer={this.requestReviewer}>
             <div className="textbox">
             <input
@@ -104,7 +116,10 @@ class TrackerItem extends Component {
           >
             Search Reviewer
           </button>
+          {searching && <div className="loading"> Searching ...</div>}
         </div>
+      )}
+      </div>
     )
   }
 }

@@ -16,7 +16,8 @@ const INITIAL_STATE = {
   status: 'in progress',
   hasError: false,
   rev1: '',
-  revEmail: '',
+  rev2: '',
+  rev3: '',
 };
 
 class SubmissionRequestForm extends Component {
@@ -39,13 +40,15 @@ class SubmissionRequestForm extends Component {
 
   handleUpload = () => {
     try {
-      const { pdf, deadline, title, email, status, rev1 } = this.state;
+      const { pdf, deadline, title, email, status, rev1, rev2, rev3 } = this.state;
       const reviewers = {};
       const filename = pdf.name;
       const storageRef = this.props.firebase.storage.ref(`pdf/${filename}`);
       const uploadTask = storageRef.put(pdf);
 
       reviewers['rev1'] = rev1;
+      reviewers['rev2'] = rev2;
+      reviewers['rev3'] = rev3;
 
       uploadTask.on(
         'state_changed',
@@ -77,7 +80,7 @@ class SubmissionRequestForm extends Component {
               });
             }).then(() => {
               this.setState({ ...INITIAL_STATE });
-              this.props.history.push(ROUTES.RESEARCHER);
+              this.props.history.push(ROUTES.SUBMISSION_TRACKER);
             });
         }
       );
@@ -118,7 +121,6 @@ class SubmissionRequestForm extends Component {
 
     const { user,
             title,
-            revEmail,
           } = this.state;
 
     return (

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../../constants/routes';
+import * as ROLES from '../../../constants/roles';
 
 class TrackerList extends Component {
   constructor(props) {
@@ -42,7 +43,11 @@ class TrackerList extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.submissions().off();
+    this.props.firebase.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.props.firebase.submissions().orderByChild('userID').equalTo(this.props.firebase.auth.currentUser.uid)
+          .off();
+      }})
   }
 
   render() {
@@ -62,12 +67,21 @@ class TrackerList extends Component {
               </tr>
           {papers.map(paper => (
               <tr key={paper.uid}>
-                <td>{paper.userID}</td>
+                <td>{paper.uid}</td>
                 <td>{paper.email}</td>
                 <td>{paper.status}</td>
                 <td>{paper.title}</td>
-
-                </tr>
+                <td>
+                  <Link
+                    to={{
+                      pathname: `${ROUTES.SUBMISSION_TRACKER}/${paper.uid}`,
+                      state: { paper },
+                    }}
+                  >
+                    Details
+                  </Link>
+                </td>
+              </tr>
             ))}
           </table>
         </div>
