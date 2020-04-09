@@ -7,6 +7,8 @@ import * as ROLES from '../../../constants/roles';
 
 import './trackeritem.css';
 
+const REVIEWER_ADDED = 'reviewer has been added';
+
 class TrackerItem extends Component {
   constructor(props) {
     super(props);
@@ -32,23 +34,26 @@ class TrackerItem extends Component {
       console.log(revEmail + ' acknowledged');
       this.props.firebase.users().orderByChild('email').equalTo(revEmail).on('value', snapshot => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
+          console.log(Object.keys(snapshot.val())[0]);
           this.setState({
-            rev1: snapshot.val(),
+            rev1: Object.keys(snapshot.val())[0],
             searching: false,
           });
         }
-        console.log('rev doesnt exist');
       })
       console.log(this.state.rev1);
       reviewers['rev1'] = this.state.rev1;
-      this.props.firebase.submission(this.props.match.params.id).update({'reviewers': rev1, });
+      this.props.firebase.submission(this.props.match.params.id).update({'reviewers': reviewers, });
       console.log(revEmail + ' successfully added');
     } catch (e) {
       console.log('Reviewer not added');
       e.message = `Reviewer not found`;
     }
 
+  }
+
+  handleDownload = () => {
+    window.open(this.state.paper.downloadURL);
   }
 
   componentDidMount() {
@@ -112,11 +117,18 @@ class TrackerItem extends Component {
           </form>
           <button
             onClick={this.requestReviewer}
+            type="submit"
             className="waves-effect waves-light btn"
           >
             Search Reviewer
           </button>
           {searching && <div className="loading"> Searching ...</div>}
+          <button
+            onClick={this.handleDownload}
+            className="waves-effect waves-light btn"
+          >
+            Download
+          </button>
         </div>
       )}
       </div>

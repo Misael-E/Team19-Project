@@ -88,9 +88,7 @@ class SubmissionRequestForm extends Component {
        console.log('Error');
     }
   };
-  handleDownload = () => {
-    window.open(this.state.url);
-  }
+
 
   componentDidMount() {
     if (this.state.user) {
@@ -162,13 +160,6 @@ class SubmissionRequestForm extends Component {
             >
               Submit Request
             </button>
-            <button
-              onClick={this.handleDownload}
-              className="waves-effect waves-light btn"
-            >
-              Download
-            </button>
-
         </div>
       )}
       </div>

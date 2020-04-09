@@ -15,3 +15,4 @@ export const VIEW_REVIEWER_DETAILS = '/:role/:id';
 export const VIEW_SUBMISSION_DETAILS = '/:role/:id';
 export const SUBMISSION_TRACKER = '/researcher/tracker';
 export const VIEW_TRACKER_DETAILS = '/researcher/tracker/:id';
+export const VIEW_PEER_EDIT_DETAILS = '/reviewer/:id';
