@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import Firebase, { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
+import Firebase, { withFirebase } from '../../Firebase';
+import * as ROUTES from '../../../constants/routes';
+import * as ROLES from '../../../constants/roles';
 
 import './changeRole.css';
 
