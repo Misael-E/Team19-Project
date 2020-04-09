@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import { withAuthorization, withEmailVerification } from '../../Session';
 import TrackerList from './TrackerList';
 import TrackerItem from './TrackerItem';
+//import RequestReviewer from '../../Assign';
 import { SubmissionRequestForm } from '../../Submission';
 import * as ROLES from '../../../constants/roles';
 import * as ROUTES from '../../../constants/routes';
@@ -58,6 +59,7 @@ class ResearcherPage extends Component {
             <Route exact path={ROUTES.REQUEST_SUBMIT} component={SubmissionRequestForm} />
             <Route exact path={ROUTES.SUBMISSION_TRACKER} component={TrackerList} />
             <Route exact path={ROUTES.VIEW_TRACKER_DETAILS} component={TrackerItem} />
+
         </div>
     </div>
   )}

@@ -100,10 +100,17 @@ class TrackerItem extends Component {
           </span>
           <span>
             <strong>Reviewers:</strong>
-              {paper.rev1}
-              {paper.rev2}
-              {paper.rev3}
+              {paper.reviewers['rev1']}
+              {paper.reviewers['rev2']}
+              {paper.reviewers['rev3']}
           </span>
+          <Link to = {{ pathname: `${ROUTES.SUBMISSION_TRACKER}/${paper.uid}/requestreviewer`,
+                        state: paper }}>
+            <button className = "waves-effect waves-light btn">
+              Nominate Peer Reviewers
+            </button>
+
+          </Link>
           <form requestReviewer={this.requestReviewer}>
             <div className="textbox">
             <input
