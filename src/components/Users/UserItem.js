@@ -7,7 +7,6 @@ import * as ROLES from '../../constants/roles';
 
 import './useritem.css';
 
-
 class UserItem extends Component {
   constructor(props) {
     super(props);
