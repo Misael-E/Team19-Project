@@ -15,41 +15,9 @@ class TrackerItem extends Component {
 
     this.state = {
       loading: false,
-      searching: false,
       paper: null,
-      revEmail: '',
       ...props.location.state,
     };
-  }
-
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  requestReviewer = event => {
-    const { revEmail, rev1 } = this.state;
-    const reviewers = {};
-    try {
-      this.setState({ searching: true });
-      console.log(revEmail + ' acknowledged');
-      this.props.firebase.users().orderByChild('email').equalTo(revEmail).on('value', snapshot => {
-        if (snapshot.exists()) {
-          console.log(Object.keys(snapshot.val())[0]);
-          this.setState({
-            rev1: Object.keys(snapshot.val())[0],
-            searching: false,
-          });
-        }
-      })
-      console.log(this.state.rev1);
-      reviewers['rev1'] = this.state.rev1;
-      this.props.firebase.submission(this.props.match.params.id).update({'reviewers': reviewers, });
-      console.log(revEmail + ' successfully added');
-    } catch (e) {
-      console.log('Reviewer not added');
-      e.message = `Reviewer not found`;
-    }
-
   }
 
   handleDownload = () => {
@@ -78,7 +46,7 @@ class TrackerItem extends Component {
   }
 
   render() {
-    const { paper, loading, searching, revEmail } = this.state;
+    const { paper, loading } = this.state;
 
     return (
       <div>
@@ -111,25 +79,6 @@ class TrackerItem extends Component {
             </button>
 
           </Link>
-          <form requestReviewer={this.requestReviewer}>
-            <div className="textbox">
-            <input
-              name="revEmail"
-              value={revEmail}
-              onChange={this.onChange}
-              type="text"
-              placeholder="Reviewer"
-            />
-            </div>
-          </form>
-          <button
-            onClick={this.requestReviewer}
-            type="submit"
-            className="waves-effect waves-light btn"
-          >
-            Search Reviewer
-          </button>
-          {searching && <div className="loading"> Searching ...</div>}
           <button
             onClick={this.handleDownload}
             className="waves-effect waves-light btn"

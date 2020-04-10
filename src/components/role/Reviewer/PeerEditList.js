@@ -22,7 +22,7 @@ class PeerEditList extends Component {
 
     this.props.firebase.auth.onAuthStateChanged(authUser => {
       if (authUser) {
-        this.props.firebase.submissions().orderByChild('reviewers/rev1').equalTo(this.props.firebase.auth.currentUser.uid)
+        this.props.firebase.submissions().orderByChild('reviewers/rev1').equalTo(this.props.firebase.auth.currentUser.email)
           .on('value', snapshot => {
           if (snapshot.exists()) {
             const papersObject = snapshot.val();
@@ -57,7 +57,7 @@ class PeerEditList extends Component {
 
     return (
       <div>
-      <h1> Track Your Submissions </h1>
+      <h1> Peer Review Assignments </h1>
       {loading && <div>Loading ...</div>}
         <table>
               <tr>
@@ -65,6 +65,7 @@ class PeerEditList extends Component {
                 <th>E-Mail</th>
                 <th>Status</th>
                 <th>Title</th>
+                <th>Deadline</th>
                 <th></th>
               </tr>
           {papers.map(paper => (
@@ -73,6 +74,7 @@ class PeerEditList extends Component {
                 <td>{paper.email}</td>
                 <td>{paper.status}</td>
                 <td>{paper.title}</td>
+                <td>{(new Date(paper.deadline)).toString()}</td>
                 <td>
                   <Link
                     to={{

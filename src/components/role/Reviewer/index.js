@@ -13,7 +13,7 @@ import './rev.css';
 const ReviewerPage = () => (
   <div>
     <h1 className="reviewer"> Reviewer </h1>
-      <div className="center">
+      <div>
         <Switch>
           <Route exact path={ROUTES.REVIEWER} component={PeerEditList} />
           <Route exact path={ROUTES.VIEW_PEER_EDIT_DETAILS} component={PeerEditItem} />

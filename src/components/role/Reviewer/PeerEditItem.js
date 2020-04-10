@@ -13,17 +13,14 @@ class PeerEditItem extends Component {
 
     this.state = {
       loading: false,
-      searching: false,
       paper: null,
-      revEmail: '',
       ...props.location.state,
     };
   }
 
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
+  handleDownload = () => {
+    window.open(this.state.paper.downloadURL);
+  }
 
   componentDidMount() {
     if (this.state.paper) {
@@ -47,7 +44,7 @@ class PeerEditItem extends Component {
   }
 
   render() {
-    const { paper, loading, searching, revEmail } = this.state;
+    const { paper, loading } = this.state;
 
     return (
       <div>
@@ -62,18 +59,17 @@ class PeerEditItem extends Component {
             <strong>E-Mail:</strong> {paper.email}
           </span>
           <span>
-            <strong>Status:</strong> {paper.status}
-          </span>
-          <span>
             <strong>Title:</strong> {paper.title}
           </span>
           <span>
-            <strong>Reviewers:</strong>
-              {paper.rev1}
-              {paper.rev2}
-              {paper.rev3}
+            <strong>Deadline: </strong> {(new Date(paper.deadline).toString())}
           </span>
-
+          <button
+            onClick={this.handleDownload}
+            className="waves-effect waves-light btn"
+          >
+            Download
+          </button>
         </div>
       )}
       </div>

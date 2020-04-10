@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 import './assign.css';
 
@@ -24,34 +26,14 @@ class RequestReviewer extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  requestReviewer = event => {
+  requestReviewer1 = event => {
     const { revEmail, rev1 } = this.state;
     const reviewers = {};
-    try {
-      this.setState({ searching: true });
       console.log(revEmail + ' acknowledged');
-      this.props.firebase.users().orderByChild('email').equalTo(revEmail).on('value', snapshot => {
-        if (snapshot.exists()) {
-          console.log(Object.keys(snapshot.val())[0]);
-          this.setState({
-            rev1: Object.keys(snapshot.val())[0],
-            searching: false,
-          });
-        }
-      })
-      console.log(this.state.rev1);
-      reviewers['rev1'] = this.state.rev1;
+      reviewers['rev1'] = revEmail;
       this.props.firebase.submission(this.props.match.params.id).update({'reviewers': reviewers, });
       console.log(revEmail + ' successfully added');
-    } catch (e) {
-      console.log('Reviewer not added');
-      e.message = `Reviewer not found`;
-    }
 
-  }
-
-  handleDownload = () => {
-    window.open(this.state.paper.downloadURL);
   }
 
   componentDidMount() {
@@ -69,6 +51,7 @@ class RequestReviewer extends Component {
           loading: false,
         });
       });
+
   }
 
   componentWillUnmount() {
@@ -85,28 +68,15 @@ class RequestReviewer extends Component {
       {paper && (
         <div className="list">
           <span>
-            <strong>Reviewer 1:</strong> {paper.rev1}
+            <strong>Reviewer 1:</strong> {paper.reviewers['rev1']}
           </span>
           <span>
-            <strong>Reviewer 2:</strong> {paper.rev2}
+            <strong>Reviewer 2:</strong> {paper.reviewers['rev2']}
           </span>
           <span>
-            <strong>Reviewer 3:</strong> {paper.rev3}
+            <strong>Reviewer 3:</strong> {paper.reviewers['rev3']}
           </span>
-          <span>
-            <strong>Reviewers:</strong>
-              {paper.rev1}
-              {paper.rev2}
-              {paper.rev3}
-          </span>
-          <Link to = {{ pathname: ROUTES.REQUEST_REVIEWER,
-                        state: paper }}>
-            <button className = "waves-effect waves-light btn">
-              Nominate Peer Reviewers
-            </button>
-
-          </Link>
-          <form requestReviewer={this.requestReviewer}>
+          <form requestReviewer={this.requestReviewer1}>
             <div className="textbox">
             <input
               name="revEmail"
@@ -115,22 +85,17 @@ class RequestReviewer extends Component {
               type="text"
               placeholder="Reviewer"
             />
+
             </div>
           </form>
           <button
-            onClick={this.requestReviewer}
+            onClick={this.requestReviewer1}
             type="submit"
             className="waves-effect waves-light btn"
           >
             Search Reviewer
           </button>
-          {searching && <div className="loading"> Searching ...</div>}
-          <button
-            onClick={this.handleDownload}
-            className="waves-effect waves-light btn"
-          >
-            Download
-          </button>
+
         </div>
       )}
       </div>
