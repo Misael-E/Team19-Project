@@ -5,7 +5,7 @@ First, install nodejs from https://nodejs.org/en/
 
 ### `install packages`
 
-Install these packages by typing these commands in console. Make sure you are in the directory of the project.<br/>
+Install these packages by typing this command in console. Make sure you are in the directory of the project.<br/>
 
 npm install <br/>
 
