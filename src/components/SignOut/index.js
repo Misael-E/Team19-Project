@@ -7,7 +7,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const SignOutButton = ({ firebase }) => (
   <button className="btn" type="button" onClick={firebase.doSignOut}>
-      <FontAwesomeIcon icon={faSignOutAlt} size='2x'/>
+      <FontAwesomeIcon icon={faSignOutAlt} size='2x' color='#e2e2e2'/>
   </button>
 );
 
