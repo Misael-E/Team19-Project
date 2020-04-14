@@ -70,6 +70,10 @@ table {
     padding: 8px;
   }
   
+  td:first-child { width: 25% ;}
+  td:second-child { width: 60% ;}
+  td:third-child { width: 15% ;}
+
   tr:nth-child(even) {
     /* background-color: #dddddd; */
   }

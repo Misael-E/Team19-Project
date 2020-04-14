@@ -11,28 +11,42 @@ import SubmissionsList from './SubmissionsList';
 import SubmissionItem from './SubmissionItem';
 import './submissionsList.css';
 
-const EditorPage = () => (
+// Index of Editor Page:
+//    Editor page content directory
+// 
 
+
+// EditorPage
+//    details: Adds HTML header and directory/routes to page
+//    params: none
+//    return: none
+//
+const EditorPage = () => (
   <div>
     <div id ="editorPage"><h1>Editor's Page</h1></div>
     <Switch>
       <Route exact path={ROUTES.EDITOR} component={SubmissionsList} />
       <Route exact path={ROUTES.VIEW_SUBMISSION_DETAILS} component={SubmissionItem} />
     </Switch>
-    {/* <Switch>
-      <Route exact path={ROUTES.EDITOR} component={ResearcherList} />
-      <Route exact path={ROUTES.VIEW_RESEARCHER_DETAILS} component={ResearcherItem} />
-    </Switch>
-    <Switch>
-      <Route exact path={ROUTES.EDITOR} component={ReviewerList} />
-      <Route exact path={ROUTES.VIEW_REVIEWER_DETAILS} component={ReviewerItem} />
-    </Switch> */}
   </div>
 );
 
+
+// condition
+//    details: Checks that the role/editor authorization
+//    params: none
+//    return: none
+//
 const condition = authUser =>
   authUser && !!authUser.roles[ROLES.EDITOR];
 
+
+
+// export
+//    details: exports the editor page
+//    params: none
+//    return: none
+//
 export default compose(
   withEmailVerification,
   withAuthorization(condition),
