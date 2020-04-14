@@ -9,11 +9,12 @@ import * as ROUTES from '../../../constants/routes';
 import Firebase from '../../Firebase';
 import SubmissionsList from './SubmissionsList';
 import SubmissionItem from './SubmissionItem';
+import './submissionsList.css';
 
 const EditorPage = () => (
 
   <div>
-    <h1>Editor</h1>
+    <div id ="editorPage"><h1>Editor's Page</h1></div>
     <Switch>
       <Route exact path={ROUTES.EDITOR} component={SubmissionsList} />
       <Route exact path={ROUTES.VIEW_SUBMISSION_DETAILS} component={SubmissionItem} />

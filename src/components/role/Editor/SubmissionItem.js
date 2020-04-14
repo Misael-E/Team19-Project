@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import { compose } from 'recompose';
+import * as ROLES from '../../../constants/roles';
+import * as ROUTES from '../../../constants/routes';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './submissionsList.css';
+import Select from 'react-select'
 
 import { withFirebase } from '../../Firebase';
 
@@ -15,15 +20,23 @@ class SubmissionItem extends Component {
       submission: null,
       ...props.location.state,
       newDeadline: new Date(props.location.state.submission.deadline),
+      newStatus: (props.location.state.submission.status),
       savedChangesMsg: ''
     };
 
     console.log(this.state.newDeadline);
   }
 
+
   handleChange = date => {
     this.setState({
       newDeadline: date
+    });
+  };
+
+  handleStatus = status => {
+    this.setState({
+      newStatus: status.value
     });
   };
 
@@ -42,31 +55,16 @@ class SubmissionItem extends Component {
   }
 
   saveEdit() {
-    // here you know which component is that, so you can call parent method
-    // this.props.update(this.props.data.id);
-
-    // var newPostKey = this.props.firebase.emptyRef().child('submissions').push().key;
-
-    // var deadlineDate = new Date(2020, 11, 1, 23, 59);
-
+   
     const submissionKey = this.props.match.params.id;
-    console.log('Submissions/' + submissionKey);
-
-    // var postData = {
-      // title: this.state.submission.title,
-      // author: this.state.submission.author,
-      // deadline: this.state.newDeadline.getTime()
-    // };
-
-    console.log(this.state.newDeadline.getTime());
-
-    // var updates = {};
-    // updates['/submissions/' + newPostKey] = postData;
-    // // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
     this.props.firebase.specifiedRef('Submissions/' + submissionKey).set({
       title: this.state.submission.title,
-      // author: this.state.submission.author,
+      downloadURL: this.state.submission.downloadURL,
+      email: this.state.submission.email,
+      reviewers: this.state.submission.reviewers,
+      userID: this.state.submission.userID,
+      status: this.state.newStatus,
       deadline: this.state.newDeadline.getTime()
     },
     function(error) {
@@ -97,27 +95,6 @@ class SubmissionItem extends Component {
   }
 
 
-  // db.push().set(values).then(() => {
-  //   console.log('Successfully set');
-
-  //   db.once('value').then((snap) => {
-  //     console.log(snap);
-  //   });
-  // });
-
-  // updateBookList: (id, data) => {
-  //   let ref = firebaseDb.ref('NewBooks');
-  //   return ref
-  //     .child(id)
-  //     .update(data)
-  //     .then(() => ref.once('value'))
-  //     .then(snapshot => snapshot.val())
-  //     .catch(error => ({
-  //       errorCode: error.code,
-  //       errorMessage: error.message
-  //     }));
-  // }
-
   componentWillUnmount() {
     this.props.firebase.submission(this.props.match.params.id).off();
   }
@@ -126,19 +103,21 @@ class SubmissionItem extends Component {
   render() {
     const { submission } = this.state;
 
+    const options = [
+      { value: 'accepted', label: 'Accept' },
+      { value: 'rejected', label: 'Reject' },
+      { value: 'in progress', label: 'Place In Progress' }
+    ]
+
     return (
-      <div>
-        <h2>{submission.title}</h2>
+      <div id="outer">
         {submission && (
-          <div>
+          <div id="info">
+            <h2 id="headerCenter">{submission.title}</h2>
             <table>
               <tr>
                   <th>Submission Title: </th>
                   <td>{submission.title}</td>
-              </tr>
-              <tr>
-                  {/* <th>Author: </th> */}
-                  {/* <td>{submission.author}</td> */}
               </tr>
               <tr>
                   <th>Deadline: </th>
@@ -153,28 +132,33 @@ class SubmissionItem extends Component {
                   />
                   }</td>
               </tr>
+              <tr>
+                  <th>Download Paper: </th>
+                  <td>{
+                    <a id="downloadPDF" href={submission.downloadURL}>Download PDF</a>
+                  }</td>
+              </tr>
+              <tr>
+                  <th>Accept/Reject: </th>
+                  <td>{
+                    <Select 
+                    options={options}
+                    onChange={this.handleStatus}
+                    />
+                  }</td>
+              </tr>
             </table>
 
-            <button onClick={this.saveEdit.bind(this)}>Save</button>
+            <Link id="linkButton" onClick={this.saveEdit.bind(this)}>Save</Link>
             {this.state.savedChangesMsg}
+            <Link id="linkButton"
+              to={{
+                pathname: `${ROUTES.EDITOR}`,
+              }}
+            >
+              Back
+            </Link>
 
-            {/* <span>
-              <strong>Title: </strong>  {submission.title}
-            </span>
-            <span>
-              <strong>Author: </strong>  {submission.author}
-            </span>
-            <span>
-              <strong>Deadline:</strong> {
-                    (new Date(submission.deadline)).toString()
-                  }
-            </span>
-            <span>
-              <DatePicker
-                selected={this.state.newDeadline}
-                onChange={this.handleChange}
-              />
-            </span> */}
           </div>
         )}
       </div>

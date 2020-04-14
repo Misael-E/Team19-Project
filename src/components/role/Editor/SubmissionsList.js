@@ -1,12 +1,10 @@
 import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
-//import { UncontrolledCollapse, Button, CardBody, Card } from 'reactstrap';
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../../constants/routes';
 import * as ROLES from '../../../constants/roles';
 import './submissionsList.css';
-// Add css for bootstrap / react-strap components
-// import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 class SubmissionsList extends Component {
   constructor(props) {
@@ -24,7 +22,7 @@ class SubmissionsList extends Component {
 
 
     // Get the submissions in progress
-    this.props.firebase.submissions().orderByChild('status').equalTo('in progress').limitToLast(3).on('value', snapshot => {
+    this.props.firebase.submissions().orderByChild('status').equalTo('in progress').on('value', snapshot => {
       if (snapshot.exists()) {
         const submissionsObject = snapshot.val();
 
@@ -44,7 +42,7 @@ class SubmissionsList extends Component {
     });
 
     // Get the accepted submissions
-    this.props.firebase.submissions().orderByChild('status').equalTo('accepted').limitToLast(3).on('value', snapshot => {
+    this.props.firebase.submissions().orderByChild('status').equalTo('accepted').on('value', snapshot => {
       if (snapshot.exists()) {
         const submissionsObject = snapshot.val();
 
@@ -64,7 +62,7 @@ class SubmissionsList extends Component {
     });
 
     // Get the rejected submissions
-    this.props.firebase.submissions().orderByChild('status').equalTo('rejected').limitToLast(3).on('value', snapshot => {
+    this.props.firebase.submissions().orderByChild('status').equalTo('rejected').on('value', snapshot => {
       if (snapshot.exists()) {
         const submissionsObject = snapshot.val();
 
@@ -83,32 +81,6 @@ class SubmissionsList extends Component {
       };
     });
 
-    // var newPostKey = this.props.firebase.emptyRef().child('submissions').push().key;
-
-    // var deadlineDate = new Date(2020, 11, 1, 23, 59);
-
-    // var postData = {
-    //   author: 'author1',
-    //   title: 'title111',
-    //   deadline: deadlineDate.getTime()
-    // };
-
-
-    // var updates = {};
-    // updates['/submissions/' + newPostKey] = postData;
-    // // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-
-    // return this.props.firebase.emptyRef().update(updates);
-
-    // //   this.props.firebase.submissions().update({
-    // //     submissionID: 'mysubmissionID',
-
-    // //     author: 'myAuthor',
-    // //     title : 'myTitle'
-    // // });
-
-    // }
-
 
   }
 
@@ -118,29 +90,20 @@ class SubmissionsList extends Component {
 
 
   render(){
-    // const submissions  = this.state;
     return(
+      <div id="outer">
+      <div id="info">
       <div>
-      <div>
-
-      <h2>In Progress</h2>
-      {/* <Button id="togglerInProgress" style={{ marginBottom: '1rem' }}>
-      In Progress <img height="20" src="https://img.icons8.com/ios-filled/50/000000/chevron-down.png"/>
-    </Button>
-      <UncontrolledCollapse toggler="#togglerInProgress">
-      <Card>
-        <CardBody> */}
+      <h2 id="headerCenter">In Progress</h2>
           <table>
               <tr>
                 <th>Submission</th>
-                {/* <th>Author</th> */}
                 <th>Deadline</th>
                 <th></th>
               </tr>
           {this.state.submissionsInProgress.map(submission => (
               <tr key={submission.submissionID}>
                 <td>{submission.title}</td>
-                {/* <td>{submission.author}</td> */}
                 <td>{(new Date(submission.deadline)).toString()}</td>
                 <td>
                     <Link
@@ -153,45 +116,21 @@ class SubmissionsList extends Component {
                     </Link>
                 </td>
               </tr>
-            // <li key={submission.submissionID}>
-            //   {/* <span>
-            //     <strong>Submission:</strong> {submission.title}
-            //   </span>
-            //   <span>
-            //     <strong>Authors:</strong> {submission.author}
-            //   </span>
-            //   <span>
-            //     <strong>Deadline:</strong> {
-            //       (new Date(submission.deadline)).toString()
-            //     }
-            //   </span>
-            // </li> */}
           ))}
         </table>
-        {/* </CardBody>
-      </Card>
-    </UncontrolledCollapse> */}
 
       </div>
       <div>
-      <h2>Accepted</h2>
-      {/* <Button id="togglerAccepted" style={{ marginBottom: '1rem' }}>
-        Accepted <img height="20" src="https://img.icons8.com/ios-filled/50/000000/chevron-down.png"/>
-      </Button>
-      <UncontrolledCollapse toggler="#togglerAccepted" >
-        <Card>
-          <CardBody> */}
+      <h2 id="headerCenter">Accepted</h2>
             <table>
                 <tr>
                   <th>Submission</th>
-                  {/* <th>Author</th> */}
                   <th>Deadline</th>
                   <th></th>
                 </tr>
             {this.state.submissionsAccepted.map(submission => (
                 <tr key={submission.submissionID}>
                   <td>{submission.title}</td>
-                  {/* <td>{submission.author}</td> */}
                   <td>{(new Date(submission.deadline)).toString()}</td>
                   <td>
                       <Link
@@ -206,29 +145,19 @@ class SubmissionsList extends Component {
                 </tr>
             ))}
           </table>
-          {/* </CardBody>
-        </Card>
-      </UncontrolledCollapse> */}
       </div>
       <div>
-      <h2>Rejected</h2>
-      {/* <Button id="togglerRejected" style={{ marginBottom: '1rem' }}>
-        Rejected <img height="20" src="https://img.icons8.com/ios-filled/50/000000/chevron-down.png"/>
-      </Button>
-      <UncontrolledCollapse toggler="#togglerRejected" >
-        <Card>
-          <CardBody> */}
+      <h2 id="headerCenter">Rejected</h2>
+    
             <table>
                 <tr>
                   <th>Submission</th>
-                  {/* <th>Author</th> */}
                   <th>Deadline</th>
                   <th></th>
                 </tr>
             {this.state.submissionsRejected.map(submission => (
                 <tr key={submission.submissionID}>
                   <td>{submission.title}</td>
-                  {/* <td>{submission.author}</td> */}
                   <td>{(new Date(submission.deadline)).toString()}</td>
                   <td>
                       <Link
@@ -243,9 +172,7 @@ class SubmissionsList extends Component {
                 </tr>
             ))}
           </table>
-          {/* </CardBody>
-        </Card>
-      </UncontrolledCollapse> */}
+      </div>
       </div>
       </div>
     )
